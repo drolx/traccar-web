@@ -1,5 +1,5 @@
 {
-  "name": "traccar",
+  "name": "@tang/traccar",
   "version": "6.5.0",
   "type": "module",
   "private": true,
@@ -21,6 +21,7 @@
     "@vitejs/plugin-react": "^4.3.1",
     "dayjs": "^1.11.13",
     "events": "^3.3.0",
+    "fetch-intercept": "^2.4.0",
     "mapbox-gl": "^1.13.3",
     "maplibre-gl": "^4.7.0",
     "maplibre-google-maps": "^1.1.0",
@@ -40,11 +41,15 @@
     "vite": "^5.4.6",
     "vite-plugin-pwa": "^0.20.5",
     "vite-plugin-svgr": "^4.2.0",
-    "wellknown": "^0.5.0"
+    "wellknown": "^0.5.0",
+    "whatwg-fetch": "^3.6.20"
   },
   "scripts": {
     "start": "vite",
     "build": "vite build",
+    "start:custom": "VITE_SERVER_PROTOCOL=https: VITE_SERVER_URL=demo.traccar.org vite",
+    "dev": "npm run start:custom",
+    "build:app": "npm run start:custom build",
     "generate-pwa-assets": "pwa-assets-generator --preset minimal public/logo.svg",
     "lint": "eslint .",
     "lint:fix": "eslint --fix ."

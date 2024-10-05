@@ -12,8 +12,28 @@ import NativeInterface from './common/components/NativeInterface';
 import ServerProvider from './ServerProvider';
 import ErrorBoundary from './ErrorBoundary';
 import AppThemeProvider from './AppThemeProvider';
+import fetchIntercept from 'fetch-intercept';
 
 preloadImages();
+
+/** Setup API inteception */
+fetchIntercept.register({
+  request: function (url, config) {
+    const serverUrl = import.meta.env.VITE_SERVER_URL;
+    const apiUrl = url.length > 0 ? (url.startsWith('/api') ? url : null) : null;
+    if (serverUrl && apiUrl) {
+      const serverProtocol = import.meta.env.VITE_SERVER_PROTOCOL ?? window.location.protocol;
+      url = `${serverProtocol}//${serverUrl}${url}`
+      config = {
+        ...config,
+        credentials: 'include',
+        mode: 'cors',
+      }
+    }
+
+    return [url, config];
+  },
+});
 
 const root = createRoot(document.getElementById('root'));
 root.render(
