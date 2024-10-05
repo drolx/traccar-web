@@ -18,7 +18,9 @@ import { useTranslation } from '../common/components/LocalizationProvider';
 import Loader from '../common/components/Loader';
 import { errorsActions } from '../store';
 
-const currentServer = `${window.location.protocol}//${window.location.host}`;
+const protocol = import.meta.env.VITE_SERVER_PROTOCOL ?? window.location.protocol
+const serverUrl = import.meta.env.VITE_SERVER_URL ?? window.location.host;
+const currentServer = `${protocol}//${serverUrl}`;
 
 const officialServers = [
   currentServer,

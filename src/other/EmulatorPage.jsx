@@ -87,7 +87,9 @@ const EmulatorPage = () => {
         params.append('id', devices[deviceId].uniqueId);
         params.append('lat', latitude);
         params.append('lon', longitude);
-        response = await fetch(`http://${window.location.hostname}:5055?${params.toString()}`, {
+        const protocol = import.meta.env.VITE_SERVER_PROTOCOL ?? window.location.protocol
+        const serverUrl = import.meta.env.VITE_SERVER_URL ?? window.location.host;
+        response = await fetch(`${protocol}//${serverUrl}:5055?${params.toString()}`, {
           method: 'POST',
           mode: 'no-cors',
         });
