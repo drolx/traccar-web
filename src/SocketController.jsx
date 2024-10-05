@@ -33,8 +33,9 @@ const SocketController = () => {
   const features = useFeatures();
 
   const connectSocket = () => {
-    const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
-    const socket = new WebSocket(`${protocol}//${window.location.host}/api/socket`);
+    const protocol = import.meta.env.VITE_SERVER_PROTOCOL ?? window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+    const host = import.meta.env.VITE_SERVER_URL ?? window.location.host;
+    const socket = new WebSocket(`${protocol}//${host}/api/socket`);
     socketRef.current = socket;
 
     socket.onopen = () => {
