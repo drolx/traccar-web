@@ -70,23 +70,24 @@ const DeviceRow = ({ data, index, style }) => {
   const primarySection = () => {
     const time = dayjs(item.lastUpdate).fromNow() ?? 'None';
 
-    return (<div>
-      <div className={classes.mnimalText}>{time}</div>
-      <div>
+    return (<>
+      <span className={classes.mnimalText}>{time}</span>
+      <span>
         {item[devicePrimary]}
         {deviceSecondary && item[deviceSecondary] && ` • ${item[deviceSecondary]}`}
-      </div>
-    </div>)
+      </span>
+    </>)
   };
 
   const secondarySection = () => {
-    return (<div>
+    return (<>
       {position && (
-        <span>{position.address}</span>
+        <Tooltip title={`${position.latitude}, ${position.longitude}`}>
+          <span style={{ textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{position.address ?? `${position.latitude}, ${position.longitude}` }</span>
+        </Tooltip>
       )}
-    </div>)
+    </>)
   };
-
 
   return (
     <div style={style}>
@@ -103,19 +104,13 @@ const DeviceRow = ({ data, index, style }) => {
           </Tooltip>
         </ListItemIcon>
         <ListItemText
-          primary={item[devicePrimary]}
-          secondary={secondaryText()}
-          slots={{
-            primary: Typography,
-            secondary: Typography,
-          }}
-          slotProps={{
-            primary: { noWrap: true },
-            secondary: { noWrap: true },
-          }}
+          primary={primarySection()}
+          primaryTypographyProps={{ noWrap: true, fontSize: '0.85rem', display: 'grid' }}
+          secondary={secondarySection()}
+          secondaryTypographyProps={{ noWrap: true, fontSize: '0.7rem' }}
         />
         {position && (
-          <div>
+          <div style={{ whiteSpace: 'nowrap' }}>
             <span className={classes.mnimalText}>{formatSpeed(position.speed, speedUnit, t)}</span>
             {position.attributes.hasOwnProperty('alarm') && (
               <Tooltip title={`${t('eventAlarm')}: ${formatAlarm(position.attributes.alarm, t)}`}>
