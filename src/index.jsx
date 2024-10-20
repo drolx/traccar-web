@@ -21,18 +21,30 @@ fetchIntercept.register({
   request: function (url, config) {
     const serverUrl = import.meta.env.VITE_SERVER_URL;
     const apiUrl = url.length > 0 ? (url.startsWith('/api') ? url : null) : null;
+
     if (serverUrl && apiUrl) {
       const serverProtocol = import.meta.env.VITE_SERVER_PROTOCOL ?? window.location.protocol;
-      url = `${serverProtocol}//${serverUrl}${url}`
-      config = {
-        ...config,
-        credentials: 'include',
-        mode: 'cors',
+      url = `${serverProtocol}//${serverUrl}${url}`;
+
+      const method = config && config.method;
+      const isServerUrl = apiUrl.includes('/api/server');
+      const isAuthRequest = apiUrl.includes('/api/session') && method === 'POST';
+
+      if (!isServerUrl && !isAuthRequest) {
+        config = {
+          ...config,
+          credentials: 'include',
+          mode: 'cors',
+        };
       }
     }
-
+    
     return [url, config];
   },
+  response: function (response) {
+
+    return response;
+  }
 });
 
 const root = createRoot(document.getElementById('root'));
