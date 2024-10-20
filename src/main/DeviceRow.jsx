@@ -15,10 +15,10 @@ import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import { devicesActions } from '../store';
 import {
-  formatAlarm, formatBoolean, formatPercentage, formatStatus, getStatusColor,
+  formatAlarm, formatBoolean, formatPercentage, formatStatus, formatSpeed, getStatusColor,
 } from '../common/util/formatter';
 import { useTranslation } from '../common/components/LocalizationProvider';
-import { mapIconKey, mapIcons } from '../map/core/preloadImages';
+// import { mapIconKey, mapIcons } from '../map/core/preloadImages';
 import { useAdministrator } from '../common/util/permissions';
 import EngineIcon from '../resources/images/data/engine.svg?react';
 import { useAttributePreference } from '../common/util/preferences';
@@ -63,24 +63,30 @@ const DeviceRow = ({ data, index, style }) => {
 
   const item = data[index];
   const position = useSelector((state) => state.session.positions[item.id]);
-
   const devicePrimary = useAttributePreference('devicePrimary', 'name');
   const deviceSecondary = useAttributePreference('deviceSecondary', '');
+  const speedUnit = useAttributePreference('speedUnit');
 
-  const secondaryText = () => {
-    let status;
-    if (item.status === 'online' || !item.lastUpdate) {
-      status = formatStatus(item.status, t);
-    } else {
-      status = dayjs(item.lastUpdate).fromNow();
-    }
-    return (
-      <>
-        {deviceSecondary && item[deviceSecondary] && `${item[deviceSecondary]} • `}
-        <span className={classes[getStatusColor(item.status)]}>{status}</span>
-      </>
-    );
+  const primarySection = () => {
+    const time = dayjs(item.lastUpdate).fromNow() ?? 'None';
+
+    return (<div>
+      <div className={classes.mnimalText}>{time}</div>
+      <div>
+        {item[devicePrimary]}
+        {deviceSecondary && item[deviceSecondary] && ` • ${item[deviceSecondary]}`}
+      </div>
+    </div>)
   };
+
+  const secondarySection = () => {
+    return (<div>
+      {position && (
+        <span>{position.address}</span>
+      )}
+    </div>)
+  };
+
 
   return (
     <div style={style}>
@@ -91,11 +97,11 @@ const DeviceRow = ({ data, index, style }) => {
         selected={selectedDeviceId === item.id}
         className={selectedDeviceId === item.id ? classes.selected : null}
       >
-        <ListItemAvatar>
-          <Avatar>
-            <img className={classes.icon} src={mapIcons[mapIconKey(item.category)]} alt="" />
-          </Avatar>
-        </ListItemAvatar>
+        <ListItemIcon style={{minWidth: '20px'}}>
+          <Tooltip title={item.status}>
+            <span className={[classes.deviceStatus, classes[getStatusColor(item.status) + 'Background']]}></span>
+          </Tooltip>
+        </ListItemIcon>
         <ListItemText
           primary={item[devicePrimary]}
           secondary={secondaryText()}
@@ -109,7 +115,8 @@ const DeviceRow = ({ data, index, style }) => {
           }}
         />
         {position && (
-          <>
+          <div>
+            <span className={classes.mnimalText}>{formatSpeed(position.speed, speedUnit, t)}</span>
             {position.attributes.hasOwnProperty('alarm') && (
               <Tooltip title={`${t('eventAlarm')}: ${formatAlarm(position.attributes.alarm, t)}`}>
                 <IconButton size="small">
@@ -140,14 +147,14 @@ const DeviceRow = ({ data, index, style }) => {
                       ? (<BatteryCharging60Icon fontSize="small" className={classes.warning} />)
                       : (<Battery60Icon fontSize="small" className={classes.warning} />)
                   )) || (
-                    position.attributes.charge
-                      ? (<BatteryCharging20Icon fontSize="small" className={classes.error} />)
-                      : (<Battery20Icon fontSize="small" className={classes.error} />)
-                  )}
+                      position.attributes.charge
+                        ? (<BatteryCharging20Icon fontSize="small" className={classes.error} />)
+                        : (<Battery20Icon fontSize="small" className={classes.error} />)
+                    )}
                 </IconButton>
               </Tooltip>
             )}
-          </>
+          </div>
         )}
       </ListItemButton>
     </div>
