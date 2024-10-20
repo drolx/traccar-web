@@ -15,9 +15,16 @@ import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import { devicesActions } from '../store';
 import {
+<<<<<<< HEAD
   formatAlarm, formatBoolean, formatPercentage, formatSpeed, getStatusColor,
 } from '../common/util/formatter';
 import { useTranslation } from '../common/components/LocalizationProvider';
+=======
+  formatAlarm, formatBoolean, formatPercentage, formatStatus, formatSpeed, getStatusColor,
+} from '../common/util/formatter';
+import { useTranslation } from '../common/components/LocalizationProvider';
+// import { mapIconKey, mapIcons } from '../map/core/preloadImages';
+>>>>>>> ce9327ca (implemented device list tweaks)
 import { useAdministrator } from '../common/util/permissions';
 import EngineIcon from '../resources/images/data/engine.svg?react';
 import { useAttributePreference } from '../common/util/preferences';
@@ -92,6 +99,7 @@ const DeviceRow = ({ data, index, style }) => {
   const primarySection = () => {
     const time = dayjs(item.lastUpdate).fromNow() ?? 'None';
 
+<<<<<<< HEAD
     return (<>
       <span className={classes.mnimalText}>{time}</span>
       <span>
@@ -109,7 +117,25 @@ const DeviceRow = ({ data, index, style }) => {
         </Tooltip>
       )}
     </>)
+=======
+    return (<div>
+      <div className={classes.mnimalText}>{time}</div>
+      <div>
+        {item[devicePrimary]}
+        {deviceSecondary && item[deviceSecondary] && ` • ${item[deviceSecondary]}`}
+      </div>
+    </div>)
+>>>>>>> ce9327ca (implemented device list tweaks)
   };
+
+  const secondarySection = () => {
+    return (<div>
+      {position && (
+        <span>{position.address}</span>
+      )}
+    </div>)
+  };
+
 
   return (
     <div style={style}>
@@ -125,12 +151,20 @@ const DeviceRow = ({ data, index, style }) => {
         </ListItemIcon>
         <ListItemText
           primary={primarySection()}
+<<<<<<< HEAD
           primaryTypographyProps={{ noWrap: true, fontSize: '0.85rem', display: 'grid' }}
+=======
+          primaryTypographyProps={{ noWrap: true, fontSize: '0.85rem' }}
+>>>>>>> ce9327ca (implemented device list tweaks)
           secondary={secondarySection()}
           secondaryTypographyProps={{ noWrap: true, fontSize: '0.7rem' }}
         />
         {position && (
+<<<<<<< HEAD
           <div style={{ whiteSpace: 'nowrap' }}>
+=======
+          <div>
+>>>>>>> ce9327ca (implemented device list tweaks)
             <span className={classes.mnimalText}>{formatSpeed(position.speed, speedUnit, t)}</span>
             {position.attributes.hasOwnProperty('alarm') && (
               <Tooltip title={`${t('eventAlarm')}: ${formatAlarm(position.attributes.alarm, t)}`}>
