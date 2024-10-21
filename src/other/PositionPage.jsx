@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useSelector } from 'react-redux';
 
 import {
-  Typography, Container, Paper, AppBar, Toolbar, IconButton, Table, TableHead, TableRow, TableCell, TableBody,
+  Typography, Container, Tooltip, Paper, AppBar, Toolbar, IconButton, Table, TableHead, TableRow, TableCell, TableBody,
 } from '@mui/material';
 import { makeStyles } from 'tss-react/mui';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -75,26 +75,34 @@ const PositionPage = () => {
       <div className={classes.content}>
         <Container maxWidth="sm">
           <Paper>
-            <Table>
+            <Table size='small'>
               <TableHead>
                 <TableRow>
+                  {/* <TableCell>{t('stateName')}</TableCell> */}
                   <TableCell>{t('stateName')}</TableCell>
-                  <TableCell>{t('sharedName')}</TableCell>
                   <TableCell>{t('stateValue')}</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
                 {item && Object.getOwnPropertyNames(item).filter((it) => it !== 'attributes').map((property) => (
                   <TableRow key={property}>
-                    <TableCell>{property}</TableCell>
-                    <TableCell><strong>{positionAttributes[property]?.name}</strong></TableCell>
+                    {/* <TableCell>{property}</TableCell> */}
+                    <TableCell>
+                      <Tooltip title={property}>
+                        <strong>{positionAttributes[property]?.name ?? property}</strong>
+                      </Tooltip>
+                    </TableCell>
                     <TableCell><PositionValue position={item} property={property} /></TableCell>
                   </TableRow>
                 ))}
                 {item && Object.getOwnPropertyNames(item.attributes).map((attribute) => (
                   <TableRow key={attribute}>
-                    <TableCell>{attribute}</TableCell>
-                    <TableCell><strong>{positionAttributes[attribute]?.name}</strong></TableCell>
+                    {/* <TableCell>{attribute}</TableCell> */}
+                    <TableCell>
+                      <Tooltip title={positionAttributes[attribute]?.name}>
+                        <strong>{positionAttributes[attribute]?.name}</strong>
+                      </Tooltip>
+                    </TableCell>
                     <TableCell><PositionValue position={item} attribute={attribute} /></TableCell>
                   </TableRow>
                 ))}
