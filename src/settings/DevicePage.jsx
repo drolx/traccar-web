@@ -1,8 +1,11 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 import {
   Accordion,
   AccordionSummary,
   AccordionDetails,
+  Button,
   Typography,
   FormControlLabel,
   Checkbox,
@@ -12,6 +15,7 @@ import {
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { MuiFileInput } from 'mui-file-input';
 import EditItemView from './components/EditItemView';
+import RemoveDialog from '../common/components/RemoveDialog';
 import EditAttributesAccordion from './components/EditAttributesAccordion';
 import SelectField from '../common/components/SelectField';
 import deviceCategories from '../common/util/deviceCategories';
@@ -21,13 +25,17 @@ import { useAdministrator } from '../common/util/permissions';
 import SettingsMenu from './components/SettingsMenu';
 import useCommonDeviceAttributes from '../common/attributes/useCommonDeviceAttributes';
 import { useCatch } from '../reactHelper';
+import { devicesActions } from '../store';
 import useQuery from '../common/util/useQuery';
+import { useDeviceReadonly } from '../common/util/permissions';
 import useSettingsStyles from './common/useSettingsStyles';
 import QrCodeDialog from '../common/components/QrCodeDialog';
 
 const DevicePage = () => {
   const { classes } = useSettingsStyles();
   const t = useTranslation();
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const admin = useAdministrator();
 
@@ -36,7 +44,9 @@ const DevicePage = () => {
 
   const query = useQuery();
   const uniqueId = query.get('uniqueId');
+  const deviceReadonly = useDeviceReadonly();
 
+  const [removing, setRemoving] = useState(false);
   const [item, setItem] = useState(uniqueId ? { uniqueId } : null);
   const [showQr, setShowQr] = useState(false);
   const [imageFile, setImageFile] = useState(null);
@@ -60,6 +70,19 @@ const DevicePage = () => {
     }
   });
 
+  const handleRemove = useCatch(async (removed) => {
+    if (removed) {
+      const response = await fetch('/api/devices');
+      if (response.ok) {
+        dispatch(devicesActions.refresh(await response.json()));
+        navigate(-1);
+      } else {
+        throw Error(await response.text());
+      }
+    }
+    setRemoving(false);
+  });
+
   const validate = () => item && item.name && item.uniqueId;
 
   return (
@@ -70,6 +93,17 @@ const DevicePage = () => {
       validate={validate}
       menu={<SettingsMenu />}
       breadcrumbs={['settingsTitle', 'sharedDevice']}
+      actions={<>
+        <Button
+          type="button"
+          color="error"
+          variant="outlined"
+          onClick={() => setRemoving(true)}
+          disabled={!(item && item.name && item.id)}
+        >
+          {t('sharedRemove')}
+        </Button>
+      </>}
     >
       {item && (
         <>
@@ -92,15 +126,6 @@ const DevicePage = () => {
                 helperText={t('deviceIdentifierHelp')}
                 disabled={Boolean(uniqueId)}
               />
-            </AccordionDetails>
-          </Accordion>
-          <Accordion>
-            <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-              <Typography variant="subtitle1">
-                {t('sharedExtra')}
-              </Typography>
-            </AccordionSummary>
-            <AccordionDetails className={classes.details}>
               <SelectField
                 value={item.groupId}
                 onChange={(event) => setItem({ ...item, groupId: Number(event.target.value) })}
@@ -112,6 +137,15 @@ const DevicePage = () => {
                 onChange={(event) => setItem({ ...item, phone: event.target.value })}
                 label={t('sharedPhone')}
               />
+            </AccordionDetails>
+          </Accordion>
+          <Accordion>
+            <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+              <Typography variant="subtitle1">
+                {t('sharedExtra')}
+              </Typography>
+            </AccordionSummary>
+            <AccordionDetails className={classes.details}>
               <TextField
                 value={item.model || ''}
                 onChange={(event) => setItem({ ...item, model: event.target.value })}
@@ -187,6 +221,16 @@ const DevicePage = () => {
         </>
       )}
       <QrCodeDialog open={showQr} onClose={() => setShowQr(false)} />
+      {
+        item && (
+          <RemoveDialog
+            open={removing}
+            endpoint="devices"
+            itemId={item.id}
+            onResult={(removed) => handleRemove(removed)}
+          />
+        )
+      }
     </EditItemView>
   );
 };
