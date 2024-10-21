@@ -14,7 +14,7 @@ import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import { devicesActions } from '../store';
 import {
-  formatAlarm, formatBoolean, formatPercentage, formatStatus, formatSpeed, getStatusColor,
+  formatAlarm, formatBoolean, formatPercentage, formatSpeed, getStatusColor,
 } from '../common/util/formatter';
 import { useTranslation } from '../common/components/LocalizationProvider';
 import { useAdministrator } from '../common/util/permissions';
