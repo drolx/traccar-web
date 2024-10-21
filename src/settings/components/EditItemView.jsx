@@ -8,7 +8,7 @@ import PageLayout from '../../common/components/PageLayout';
 import useSettingsStyles from '../common/useSettingsStyles';
 
 const EditItemView = ({
-  children, endpoint, item, setItem, defaultItem, validate, onItemSaved, menu, breadcrumbs,
+  children, endpoint, item, setItem, defaultItem, validate, onItemSaved, menu, breadcrumbs, actions,
 }) => {
   const navigate = useNavigate();
   const { classes } = useSettingsStyles();
@@ -55,7 +55,7 @@ const EditItemView = ({
 
   return (
     <PageLayout menu={menu} breadcrumbs={breadcrumbs}>
-      <Container maxWidth="xs" className={classes.container}>
+      <Container maxWidth="sm" className={classes.container}>
         {item ? children : (
           <Accordion defaultExpanded>
             <AccordionSummary>
@@ -81,6 +81,7 @@ const EditItemView = ({
           >
             {t('sharedCancel')}
           </Button>
+          {actions}
           <Button
             color="primary"
             variant="contained"
