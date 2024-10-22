@@ -94,7 +94,7 @@ const PreferencesPage = () => {
 
   return (
     <PageLayout menu={<SettingsMenu />} breadcrumbs={['settingsTitle', 'sharedPreferences']}>
-      <Container maxWidth="xs" className={classes.container}>
+      <Container maxWidth="sm" className={classes.container}>
         {!readonly && (
           <>
             <Accordion defaultExpanded>

@@ -31,7 +31,9 @@ const UsersPage = () => {
   const [temporary, setTemporary] = useState(false);
 
   const handleLogin = useCatch(async (userId) => {
-    const response = await fetch(`/api/session/${userId}`);
+    const response = await fetch(`/api/session/${userId}`, {
+      method: 'GET',
+    });
     if (response.ok) {
       window.location.replace('/');
     } else {

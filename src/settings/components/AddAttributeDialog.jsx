@@ -35,7 +35,7 @@ const AddAttributeDialog = ({ open, onResult, definitions }) => {
   const [type, setType] = useState('string');
 
   return (
-    <Dialog open={open} fullWidth maxWidth="xs">
+    <Dialog open={open} fullWidth maxWidth="sm">
       <DialogContent className={classes.details}>
         <Autocomplete
           onChange={(_, option) => {

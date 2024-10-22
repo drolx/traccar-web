@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-  Divider, List, ListItemButton, ListItemIcon, ListItemText,
+  Divider, ListItemButton, ListItemIcon, ListItemText,
 } from '@mui/material';
 import SettingsIcon from '@mui/icons-material/Settings';
 import CreateIcon from '@mui/icons-material/Create';
@@ -24,15 +24,15 @@ import {
 import useFeatures from '../../common/util/useFeatures';
 
 const MenuItem = ({
-  title, link, icon, selected,
+  title, link, icon, selected, dense = false,
 }) => (
-  <ListItemButton key={link} component={Link} to={link} selected={selected}>
+  <ListItemButton key={link} dense={dense} component={Link} to={link} selected={selected}>
     <ListItemIcon>{icon}</ListItemIcon>
     <ListItemText primary={title} />
   </ListItemButton>
 );
 
-const SettingsMenu = () => {
+const SettingsMenu = ({ dense = true }) => {
   const t = useTranslation();
   const location = useLocation();
 
@@ -46,122 +46,133 @@ const SettingsMenu = () => {
 
   return (
     <>
-      <List>
-        <MenuItem
-          title={t('sharedPreferences')}
-          link="/settings/preferences"
-          icon={<SettingsIcon />}
-          selected={location.pathname === '/settings/preferences'}
-        />
-        {!readonly && (
-          <>
+      {!readonly && (<MenuItem
+        dense={dense}
+        title={t('settingsUser')}
+        link={`/settings/user/${userId}`}
+        icon={<PersonIcon />}
+        selected={location.pathname === `/settings/user/${userId}`}
+      />)}
+      <MenuItem
+        dense={dense}
+        title={t('sharedPreferences')}
+        link="/settings/preferences"
+        icon={<SettingsIcon />}
+        selected={location.pathname === '/settings/preferences'}
+      />
+      {!readonly && (
+        <>
+          <MenuItem
+            dense={dense}
+            title={t('sharedNotifications')}
+            link="/settings/notifications"
+            icon={<NotificationsIcon />}
+            selected={location.pathname.startsWith('/settings/notification')}
+          />
+          <MenuItem
+            dense={dense}
+            title={t('deviceTitle')}
+            link="/settings/devices"
+            icon={<SmartphoneIcon />}
+            selected={location.pathname.startsWith('/settings/device')}
+          />
+          {!features.disableGroups && (
             <MenuItem
-              title={t('sharedNotifications')}
-              link="/settings/notifications"
-              icon={<NotificationsIcon />}
-              selected={location.pathname.startsWith('/settings/notification')}
+              dense={dense}
+              title={t('settingsGroups')}
+              link="/settings/groups"
+              icon={<FolderIcon />}
+              selected={location.pathname.startsWith('/settings/group')}
             />
+          )}
+          <MenuItem
+            dense={dense}
+            title={t('sharedGeofences')}
+            link="/geofences"
+            icon={<CreateIcon />}
+            selected={location.pathname.startsWith('/settings/geofence')}
+          />
+          {!features.disableDrivers && (
             <MenuItem
-              title={t('settingsUser')}
-              link={`/settings/user/${userId}`}
+              dense={dense}
+              title={t('sharedDrivers')}
+              link="/settings/drivers"
               icon={<PersonIcon />}
-              selected={location.pathname === `/settings/user/${userId}`}
+              selected={location.pathname.startsWith('/settings/driver')}
             />
+          )}
+          {!features.disableCalendars && (
             <MenuItem
-              title={t('deviceTitle')}
-              link="/settings/devices"
-              icon={<SmartphoneIcon />}
-              selected={location.pathname.startsWith('/settings/device')}
+              dense={dense}
+              title={t('sharedCalendars')}
+              link="/settings/calendars"
+              icon={<TodayIcon />}
+              selected={location.pathname.startsWith('/settings/calendar')}
             />
+          )}
+          {!features.disableComputedAttributes && (
             <MenuItem
-              title={t('sharedGeofences')}
-              link="/geofences"
-              icon={<CreateIcon />}
-              selected={location.pathname.startsWith('/settings/geofence')}
+              dense={dense}
+              title={t('sharedComputedAttributes')}
+              link="/settings/attributes"
+              icon={<StorageIcon />}
+              selected={location.pathname.startsWith('/settings/attribute')}
             />
-            {!features.disableGroups && (
-              <MenuItem
-                title={t('settingsGroups')}
-                link="/settings/groups"
-                icon={<FolderIcon />}
-                selected={location.pathname.startsWith('/settings/group')}
-              />
-            )}
-            {!features.disableDrivers && (
-              <MenuItem
-                title={t('sharedDrivers')}
-                link="/settings/drivers"
-                icon={<PersonIcon />}
-                selected={location.pathname.startsWith('/settings/driver')}
-              />
-            )}
-            {!features.disableCalendars && (
-              <MenuItem
-                title={t('sharedCalendars')}
-                link="/settings/calendars"
-                icon={<TodayIcon />}
-                selected={location.pathname.startsWith('/settings/calendar')}
-              />
-            )}
-            {!features.disableComputedAttributes && (
-              <MenuItem
-                title={t('sharedComputedAttributes')}
-                link="/settings/attributes"
-                icon={<StorageIcon />}
-                selected={location.pathname.startsWith('/settings/attribute')}
-              />
-            )}
-            {!features.disableMaintenance && (
-              <MenuItem
-                title={t('sharedMaintenance')}
-                link="/settings/maintenances"
-                icon={<BuildIcon />}
-                selected={location.pathname.startsWith('/settings/maintenance')}
-              />
-            )}
-            {!features.disableSavedCommands && (
-              <MenuItem
-                title={t('sharedSavedCommands')}
-                link="/settings/commands"
-                icon={<PublishIcon />}
-                selected={location.pathname.startsWith('/settings/command')}
-              />
-            )}
-            {supportLink && (
-              <MenuItem
-                title={t('settingsSupport')}
-                link={supportLink}
-                icon={<HelpIcon />}
-              />
-            )}
-          </>
-        )}
-      </List>
+          )}
+          {!features.disableMaintenance && (
+            <MenuItem
+              dense={dense}
+              title={t('sharedMaintenance')}
+              link="/settings/maintenances"
+              icon={<BuildIcon />}
+              selected={location.pathname.startsWith('/settings/maintenance')}
+            />
+          )}
+          {!features.disableSavedCommands && (
+            <MenuItem
+              dense={dense}
+              title={t('sharedSavedCommands')}
+              link="/settings/commands"
+              icon={<PublishIcon />}
+              selected={location.pathname.startsWith('/settings/command')}
+            />
+          )}
+          {supportLink && (
+            <MenuItem
+              dense={dense}
+              title={t('settingsSupport')}
+              link={supportLink}
+              icon={<HelpIcon />}
+            />
+          )}
+        </>
+      )}
       {manager && (
         <>
           <Divider />
-          <List>
+          <MenuItem
+            dense={dense}
+            title={t('serverAnnouncement')}
+            link="/settings/announcement"
+            icon={<CampaignIcon />}
+            selected={location.pathname === '/settings/announcement'}
+          />
+          {admin && (
             <MenuItem
-              title={t('serverAnnouncement')}
-              link="/settings/announcement"
-              icon={<CampaignIcon />}
-              selected={location.pathname === '/settings/announcement'}
+              dense={dense}
+              title={t('settingsServer')}
+              link="/settings/server"
+              icon={<StorageIcon />}
+              selected={location.pathname === '/settings/server'}
             />
-            {admin && (
-              <MenuItem
-                title={t('settingsServer')}
-                link="/settings/server"
-                icon={<StorageIcon />}
-                selected={location.pathname === '/settings/server'}
-              />
-            )}
-            <MenuItem
-              title={t('settingsUsers')}
-              link="/settings/users"
-              icon={<PeopleIcon />}
-              selected={location.pathname.startsWith('/settings/user') && location.pathname !== `/settings/user/${userId}`}
-            />
-          </List>
+          )}
+          <MenuItem
+            dense={dense}
+            title={t('settingsUsers')}
+            link="/settings/users"
+            icon={<PeopleIcon />}
+            selected={location.pathname.startsWith('/settings/user') && location.pathname !== `/settings/user/${userId}`}
+          />
         </>
       )}
     </>

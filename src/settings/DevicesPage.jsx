@@ -63,7 +63,7 @@ const DevicesPage = () => {
   return (
     <PageLayout menu={<SettingsMenu />} breadcrumbs={['settingsTitle', 'deviceTitle']}>
       <SearchHeader keyword={searchKeyword} setKeyword={setSearchKeyword} />
-      <Table className={classes.table}>
+      <Table className={classes.table} size="small">
         <TableHead>
           <TableRow>
             <TableCell>{t('sharedName')}</TableCell>
@@ -80,7 +80,7 @@ const DevicesPage = () => {
         <TableBody>
           {!loading ? items.filter(filterByKeyword(searchKeyword)).map((item) => (
             <TableRow key={item.id}>
-              <TableCell>{item.name}</TableCell>
+              <TableCell style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{item.name}</TableCell>
               <TableCell>{item.uniqueId}</TableCell>
               <TableCell>{item.groupId ? groups[item.groupId]?.name : null}</TableCell>
               <TableCell>{item.phone}</TableCell>
