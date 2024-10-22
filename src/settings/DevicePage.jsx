@@ -83,7 +83,7 @@ const DevicePage = () => {
     setRemoving(false);
   });
 
-  const validate = () => item && item.name && item.uniqueId;
+  const validate = () => item && item.name && item.uniqueId && item.groupId && item.phone;
 
   return (
     <EditItemView
