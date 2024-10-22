@@ -6,7 +6,6 @@ import {
     Button,
     Avatar,
     Menu,
-    MenuItem,
     ListItemButton,
     ListItemIcon,
     ListItemText,
@@ -16,6 +15,7 @@ import {
 import DescriptionIcon from '@mui/icons-material/Description';
 import PersonIcon from '@mui/icons-material/Person';
 import ExitToAppIcon from '@mui/icons-material/ExitToApp';
+import ArrowDropDown from '@mui/icons-material/ArrowDropDown';
 import SettingsMenu from '../../settings/components/SettingsMenu';
 import { useNavigate } from 'react-router-dom';
 import { sessionActions } from '../../store';
@@ -73,6 +73,7 @@ const DesktopMenu = () => {
                     <PersonIcon />
                 </Avatar>
                 <Typography sx={{ minWidth: 80 }}>{(user && user.name) ?? t('settingsUser')}</Typography>
+                <ArrowDropDown />
             </Button>
             <Menu
                 anchorEl={anchorEl}
