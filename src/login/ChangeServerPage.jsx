@@ -55,7 +55,7 @@ const ChangeServerPage = () => {
   };
 
   return (
-    <Container maxWidth="xs" className={classes.container}>
+    <Container maxWidth="sm" className={classes.container}>
       <ElectricalServicesIcon className={classes.icon} />
       <Autocomplete
         freeSolo

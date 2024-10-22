@@ -29,7 +29,7 @@ const DeviceConnectionsPage = () => {
       menu={<SettingsMenu />}
       breadcrumbs={['settingsTitle', 'sharedDevice', 'sharedConnections']}
     >
-      <Container maxWidth="xs" className={classes.container}>
+      <Container maxWidth="sm" className={classes.container}>
         <Accordion defaultExpanded>
           <AccordionSummary expandIcon={<ExpandMoreIcon />}>
             <Typography variant="subtitle1">
