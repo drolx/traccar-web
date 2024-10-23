@@ -78,7 +78,7 @@ const ServerPage = () => {
 
   return (
     <PageLayout menu={<SettingsMenu />} breadcrumbs={['settingsTitle', 'settingsServer']}>
-      <Container maxWidth="xs" className={classes.container}>
+      <Container maxWidth="sm" className={classes.container}>
         {item && (
           <>
             <Accordion defaultExpanded>

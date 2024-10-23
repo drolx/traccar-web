@@ -1,10 +1,22 @@
 import * as React from 'react';
+import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { Paper, Button, Avatar, Menu, MenuItem, ListItemIcon, Divider, Typography, } from '@mui/material';
-import SettingsIcon from '@mui/icons-material/Settings';
+import {
+    Paper,
+    Button,
+    Avatar,
+    Menu,
+    ListItemButton,
+    ListItemIcon,
+    ListItemText,
+    Divider,
+    Typography,
+} from '@mui/material';
 import DescriptionIcon from '@mui/icons-material/Description';
 import PersonIcon from '@mui/icons-material/Person';
 import ExitToAppIcon from '@mui/icons-material/ExitToApp';
+import ArrowDropDown from '@mui/icons-material/ArrowDropDown';
+import SettingsMenu from '../../settings/components/SettingsMenu';
 import { useNavigate } from 'react-router-dom';
 import { sessionActions } from '../../store';
 import { useTranslation } from './LocalizationProvider';
@@ -61,6 +73,7 @@ const DesktopMenu = () => {
                     <PersonIcon />
                 </Avatar>
                 <Typography sx={{ minWidth: 80 }}>{(user && user.name) ?? t('settingsUser')}</Typography>
+                <ArrowDropDown />
             </Button>
             <Menu
                 anchorEl={anchorEl}
@@ -72,36 +85,26 @@ const DesktopMenu = () => {
                 anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
                 PaperProps={{
                     style: {
-                        width: '200px',
+                        width: '224px',
                         marginTop: '8px',
                     },
                 }}
             >
-                <MenuItem onClick={() => navigate(`/settings/user/${user.id}`)}>
-                    <ListItemIcon>
-                        <PersonIcon />
-                    </ListItemIcon>
-                    <Typography>{t('settingsUser')}</Typography>
-                </MenuItem>
-                <Divider />
-                <MenuItem onClick={() => navigate('/reports/route')}>
+                <ListItemButton key="/reports/route" dense={true} component={Link} to="/reports/route">
                     <ListItemIcon>
                         <DescriptionIcon />
                     </ListItemIcon>
-                    <Typography>{t('reportTitle')}</Typography>
-                </MenuItem>
-                <MenuItem onClick={() => navigate('/settings/preferences')}>
-                    <ListItemIcon>
-                        <SettingsIcon />
-                    </ListItemIcon>
-                    <Typography>{t('settingsTitle')}</Typography>
-                </MenuItem>
-                <MenuItem onClick={handleLogout}>
+                    <ListItemText primary={t('reportTitle')} />
+                </ListItemButton>
+                <Divider />
+                <SettingsMenu dense={true} />
+                <Divider />
+                <ListItemButton dense={true} component={Link} onClick={handleLogout}>
                     <ListItemIcon>
                         <ExitToAppIcon />
                     </ListItemIcon>
-                    <Typography>{t('loginLogout')}</Typography>
-                </MenuItem>
+                    <ListItemText primary={t('loginLogout')} />
+                </ListItemButton>
             </Menu>
         </Paper>
     );

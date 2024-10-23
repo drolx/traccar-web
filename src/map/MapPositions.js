@@ -3,12 +3,14 @@ import { useSelector } from 'react-redux';
 import { useMediaQuery } from '@mui/material';
 import { useTheme } from '@mui/styles';
 import { map } from './core/MapView';
-import { formatTime, getStatusColor } from '../common/util/formatter';
+import { useTranslation } from '../common/components/LocalizationProvider';
+import { formatTime, getStatusColor, formatSpeed } from '../common/util/formatter';
 import { mapIconKey } from './core/preloadImages';
 import { useAttributePreference } from '../common/util/preferences';
 import { useCatchCallback } from '../reactHelper';
 
 const MapPositions = ({ positions, onClick, showStatus, selectedPosition, titleField }) => {
+  const t = useTranslation();
   const id = useId();
   const clusters = `${id}-clusters`;
   const selected = `${id}-selected`;
@@ -16,6 +18,7 @@ const MapPositions = ({ positions, onClick, showStatus, selectedPosition, titleF
   const theme = useTheme();
   const desktop = useMediaQuery(theme.breakpoints.up('md'));
   const iconScale = useAttributePreference('iconScale', desktop ? 0.75 : 1);
+  const speedUnit = useAttributePreference('speedUnit');
 
   const devices = useSelector((state) => state.devices.items);
   const selectedDeviceId = useSelector((state) => state.devices.selectedId);
@@ -45,7 +48,9 @@ const MapPositions = ({ positions, onClick, showStatus, selectedPosition, titleF
       category: mapIconKey(device.category),
       color: showStatus ? position.attributes.color || getStatusColor(device.status) : 'neutral',
       rotation: position.course,
+      speed: `(${formatSpeed(position.speed, speedUnit, t)})`,
       direction: showDirection,
+      iconDirection: device.category === 'default' ? position.course : 0,
     };
   };
 
@@ -107,15 +112,29 @@ const MapPositions = ({ positions, onClick, showStatus, selectedPosition, titleF
           'icon-image': '{category}-{color}',
           'icon-size': iconScale,
           'icon-allow-overlap': true,
-          'text-field': `{${titleField || 'name'}}`,
+          'icon-rotate': ['get', 'iconDirection'],
+          'icon-rotation-alignment': 'map',
+          // TODO: Explor better options for text background
+          // 'text-field': `{${titleField || 'name'}}`,
+          'text-field': [
+            'format',
+            ['get', `${titleField || 'name'}`],
+            { 
+              // 'font-scale': 1.2 
+            },
+            ' ',
+            {},
+            ['get', 'speed']
+          ],
           'text-allow-overlap': true,
-          'text-anchor': 'bottom',
-          'text-offset': [0, -2 * iconScale],
+          'text-anchor': 'left',
+          'text-offset': [1.5, -0.2 * iconScale],
           'text-size': 12,
+          'text-max-width': 20
         },
         paint: {
-          'text-halo-color': 'white',
-          'text-halo-width': 1,
+          'text-halo-color': '#fff',
+          'text-halo-width': 2,
         },
       });
       map.addLayer({

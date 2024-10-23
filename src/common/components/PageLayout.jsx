@@ -2,9 +2,10 @@ import React, { useState } from 'react';
 import {
   AppBar,
   Breadcrumbs,
-  Divider,
   Drawer,
   IconButton,
+  List,
+  Stack,
   Toolbar,
   Typography,
   useMediaQuery,
@@ -12,8 +13,10 @@ import {
 } from '@mui/material';
 import makeStyles from '@mui/styles/makeStyles';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import MapIcon from '@mui/icons-material/Home';
 import MenuIcon from '@mui/icons-material/Menu';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
+import DesktopMenu from './DesktopMenu';
 import { useTranslation } from './LocalizationProvider';
 
 const useStyles = makeStyles((theme) => ({
@@ -35,12 +38,19 @@ const useStyles = makeStyles((theme) => ({
   mobileToolbar: {
     zIndex: 1,
   },
+  desktopHeader: {
+    width: '100%',
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
   content: {
     flexGrow: 1,
     alignItems: 'stretch',
     display: 'flex',
     flexDirection: 'column',
     overflowY: 'auto',
+    padding: 10,
   },
 }));
 
@@ -69,6 +79,7 @@ const PageLayout = ({ menu, breadcrumbs, children }) => {
   const classes = useStyles();
   const theme = useTheme();
   const navigate = useNavigate();
+  const location = useLocation();
 
   const desktop = useMediaQuery(theme.breakpoints.up('md'));
 
@@ -76,21 +87,40 @@ const PageLayout = ({ menu, breadcrumbs, children }) => {
 
   return desktop ? (
     <div className={classes.desktopRoot}>
-      <Drawer
-        variant="permanent"
-        className={classes.desktopDrawer}
-        classes={{ paper: classes.desktopDrawer }}
-      >
-        <Toolbar>
-          <IconButton color="inherit" edge="start" sx={{ mr: 2 }} onClick={() => navigate('/')}>
-            <ArrowBackIcon />
-          </IconButton>
-          <PageTitle breadcrumbs={breadcrumbs} />
+      {location.pathname.startsWith('/report') && (
+        <Drawer
+          variant="permanent"
+          className={classes.desktopDrawer}
+          classes={{ paper: classes.desktopDrawer }}
+        >
+          <List>
+            {menu}
+          </List>
+        </Drawer>
+      )}
+      <div style={{
+        width: '100%',
+        display: 'flex',
+        flexDirection: 'column'
+      }}>
+        <Toolbar className={classes.desktopHeader}>
+          <Stack direction="row">
+            <IconButton color="inherit" edge="start" sx={{ mr: 2 }} onClick={() => navigate(-1)}>
+              <ArrowBackIcon />
+            </IconButton>
+            <PageTitle breadcrumbs={breadcrumbs} />
+          </Stack>
+          <Stack direction="row">
+            <IconButton color="inherit" edge="start" sx={{ mr: 2 }} onClick={() => navigate('/')}>
+              <MapIcon />
+            </IconButton>
+            <DesktopMenu />
+          </Stack>
         </Toolbar>
-        <Divider />
-        {menu}
-      </Drawer>
-      <div className={classes.content}>{children}</div>
+        <div className={classes.content}>
+          {children}
+        </div>
+      </div>
     </div>
   ) : (
     <div className={classes.mobileRoot}>
@@ -100,7 +130,9 @@ const PageLayout = ({ menu, breadcrumbs, children }) => {
         onClose={() => setOpenDrawer(false)}
         classes={{ paper: classes.mobileDrawer }}
       >
-        {menu}
+        <List>
+          {menu}
+        </List>
       </Drawer>
       <AppBar className={classes.mobileToolbar} position="static" color="inherit">
         <Toolbar>

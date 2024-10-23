@@ -15,10 +15,9 @@ import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import { devicesActions } from '../store';
 import {
-  formatAlarm, formatBoolean, formatPercentage, formatStatus, formatSpeed, getStatusColor,
+  formatAlarm, formatBoolean, formatPercentage, formatSpeed, getStatusColor,
 } from '../common/util/formatter';
 import { useTranslation } from '../common/components/LocalizationProvider';
-// import { mapIconKey, mapIcons } from '../map/core/preloadImages';
 import { useAdministrator } from '../common/util/permissions';
 import EngineIcon from '../resources/images/data/engine.svg?react';
 import { useAttributePreference } from '../common/util/preferences';
@@ -105,8 +104,8 @@ const DeviceRow = ({ data, index, style }) => {
   const secondarySection = () => {
     return (<>
       {position && (
-        <Tooltip title={`${position.latitude}, ${position.longitude}`}>
-          <span style={{ textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{position.address ?? `${position.latitude}, ${position.longitude}` }</span>
+        <Tooltip title={`${position.latitude.toFixed(5)}, ${position.longitude.toFixed(5)}`}>
+          <span style={{ textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{position.address ?? `${position.latitude.toFixed(5)}, ${position.longitude.toFixed(5)}` }</span>
         </Tooltip>
       )}
     </>)
