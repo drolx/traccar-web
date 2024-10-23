@@ -112,7 +112,7 @@ const StatusRow = ({ name, content }) => {
 
   return (
     <TableRow>
-      <TableCell size='small' sx={{ textWrap: 'nowrap' }} className={classes.cell}>
+      <TableCell size='small' sx={{ textWrap: 'nowrap', paddingRight: 2, }} className={classes.cell}>
         <Typography variant="body2">{name}</Typography>
       </TableCell>
       <TableCell size='small' className={classes.cell}>

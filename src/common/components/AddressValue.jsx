@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux';
 import { Link } from '@mui/material';
 import { useTranslation } from './LocalizationProvider';
 import { formatCoordinate } from '../util/formatter';
-import { useAttributePreference, usePreference } from '../util/preferences';
+import { usePreference } from '../util/preferences';
 import { useCatch } from '../../reactHelper';
 
 const AddressValue = ({ latitude, longitude, originalAddress }) => {
@@ -33,7 +33,7 @@ const AddressValue = ({ latitude, longitude, originalAddress }) => {
     return address;
   }
   if (addressEnabled) {
-    return (<Link href="#" onClick={showAddress}>{`t('sharedShowAddress') (${formatCoordinate('latitude', latitude, coordinateFormat)}, ${formatCoordinate('longitude', longitude, coordinateFormat)})`}</Link>);
+    return (<Link href="#" onClick={showAddress}>{ t('sharedShowAddress') + `(${formatCoordinate('latitude', latitude, coordinateFormat)}, ${formatCoordinate('longitude', longitude, coordinateFormat)})`}</Link>);
   }
   return `${formatCoordinate('latitude', latitude, coordinateFormat)}, ${formatCoordinate('longitude', longitude, coordinateFormat)}`;
 };
