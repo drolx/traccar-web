@@ -51,6 +51,7 @@ const MapPositions = ({ positions, onMapClick, onMarkerClick, showStatus, select
       rotation: position.course,
       speed: `(${formatSpeed(position.speed, speedUnit, t)})`,
       direction: showDirection,
+      iconDirection: device.category === 'default' ? position.course : 0,
     };
   };
 
@@ -112,6 +113,8 @@ const MapPositions = ({ positions, onMapClick, onMarkerClick, showStatus, select
           'icon-image': '{category}-{color}',
           'icon-size': iconScale,
           'icon-allow-overlap': true,
+          'icon-rotate': ['get', 'iconDirection'],
+          'icon-rotation-alignment': 'map',
           // TODO: Explor better options for text background
           // 'text-field': `{${titleField || 'name'}}`,
           'text-field': [
