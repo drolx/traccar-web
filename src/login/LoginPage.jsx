@@ -1,12 +1,14 @@
 import { useEffect, useState } from 'react';
 import {
-  useMediaQuery, Button, TextField, Link, Snackbar, IconButton,
+  useMediaQuery, Button, TextField, Link, Snackbar, IconButton, InputAdornment,
 } from '@mui/material';
 import ReactCountryFlag from 'react-country-flag';
 import { makeStyles } from 'tss-react/mui';
 import CloseIcon from '@mui/icons-material/Close';
-import VpnLockIcon from '@mui/icons-material/VpnLock';
-import QrCode2Icon from '@mui/icons-material/QrCode2';
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
+import EmailIcon from '@mui/icons-material/Email';
+import PasswordIcon from '@mui/icons-material/Password';
 import { useTheme } from '@mui/material/styles';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
@@ -69,6 +71,7 @@ const LoginPage = () => {
 
   const [email, setEmail] = usePersistedState('loginEmail', '');
   const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const [code, setCode] = useState('');
   const [showServerTooltip, setShowServerTooltip] = useState(false);
   const [showQr, setShowQr] = useState(false);
@@ -81,6 +84,11 @@ const LoginPage = () => {
 
   const [announcementShown, setAnnouncementShown] = useState(false);
   const announcement = useSelector((state) => state.session.server.announcement);
+
+  const handleClickShowPassword = () => setShowPassword((show) => !show);
+  const handleMouseDownPassword = (event) => {
+    event.preventDefault();
+  };
 
   const handlePasswordLogin = async (event) => {
     event.preventDefault();
@@ -157,6 +165,11 @@ const LoginPage = () => {
           autoFocus={!email}
           onChange={(e) => setEmail(e.target.value)}
           helperText={failed && 'Invalid username or password'}
+          InputProps={{
+            startAdornment: (
+              <EmailIcon style={{ marginRight: 8, padding: 1, }} />
+            ),
+          }}
         />
         <TextField
           required
@@ -164,10 +177,25 @@ const LoginPage = () => {
           label={t('userPassword')}
           name="password"
           value={password}
-          type="password"
           autoComplete="current-password"
           autoFocus={!!email}
           onChange={(e) => setPassword(e.target.value)}
+          type={showPassword ? 'text' : 'password'}
+          InputProps={{
+            startAdornment: (
+              <PasswordIcon style={{ marginRight: 8, padding: 1, }} />
+            ),
+            endAdornment: (
+              <IconButton
+                aria-label="toggle password visibility"
+                onClick={handleClickShowPassword}
+                onMouseDown={handleMouseDownPassword}
+                edge="end"
+              >
+                {showPassword ? <VisibilityOffIcon /> : <VisibilityIcon />}
+              </IconButton>
+            ),
+          }}
         />
         {codeEnabled && (
           <TextField
