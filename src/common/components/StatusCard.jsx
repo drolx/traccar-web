@@ -85,6 +85,9 @@ const useStyles = makeStyles()((theme, { desktopPadding }) => ({
   cell: {
     borderBottom: 'none',
   },
+  propertyCell: {
+    padding: theme.spacing(0, 1, 0, 0.5),
+  },
   actions: {
     justifyContent: 'space-between',
   },
@@ -110,8 +113,8 @@ const StatusRow = ({ name, content }) => {
 
   return (
     <TableRow>
-      <TableCell size='small' sx={{ textWrap: 'nowrap', paddingRight: 2, }} className={classes.cell}>
-        <Typography variant="body2">{name}</Typography>
+      <TableCell size='small' className={classes.cell}>
+        <Typography variant="body2" className={classes.propertyCell}>{name}</Typography>
       </TableCell>
       <TableCell size='small' className={classes.cell}>
         <Typography variant="body2" color="textSecondary">{content}</Typography>
