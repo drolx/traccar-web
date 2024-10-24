@@ -65,7 +65,7 @@ const useStyles = makeStyles()((theme) => ({
 
   },
   mnimalText: {
-    fontSize: '0.75rem',
+    fontSize: '0.65rem',
     marginRight: '0.3rem',
   },
   deviceStatusRoot: {
