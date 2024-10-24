@@ -1,17 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import dayjs from 'dayjs';
 import {
-  useMediaQuery, Select, MenuItem, FormControl, Button, TextField, Link, Snackbar, IconButton, Tooltip, Box,
+  useMediaQuery, Button, TextField, Link, Snackbar, IconButton,
 } from '@mui/material';
-import ReactCountryFlag from 'react-country-flag';
 import makeStyles from '@mui/styles/makeStyles';
 import CloseIcon from '@mui/icons-material/Close';
-import LockOpenIcon from '@mui/icons-material/LockOpen';
 import { useTheme } from '@mui/material/styles';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { sessionActions } from '../store';
-import { useLocalization, useTranslation } from '../common/components/LocalizationProvider';
+import { useTranslation } from '../common/components/LocalizationProvider';
 import LoginLayout from './LoginLayout';
 import usePersistedState from '../common/util/usePersistedState';
 import { handleLoginTokenListeners, nativeEnvironment, nativePostMessage } from '../common/components/NativeInterface';
@@ -27,6 +25,13 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     flexDirection: 'row',
     gap: theme.spacing(1),
+  },
+  footer: {
+    position: 'fixed',
+    bottom: theme.spacing(2),
+    right: theme.spacing(2),
+    display: 'flex',
+    flexDirection: 'row',
   },
   container: {
     display: 'flex',
@@ -55,9 +60,6 @@ const LoginPage = () => {
   const theme = useTheme();
   const t = useTranslation();
 
-  const { languages, language, setLanguage } = useLocalization();
-  const languageList = Object.entries(languages).map((values) => ({ code: values[0], country: values[1].country, name: values[1].name }));
-
   const [failed, setFailed] = useState(false);
 
   const [email, setEmail] = usePersistedState('loginEmail', '');
@@ -65,8 +67,6 @@ const LoginPage = () => {
   const [code, setCode] = useState('');
 
   const registrationEnabled = useSelector((state) => state.session.server.registration);
-  const languageEnabled = useSelector((state) => !state.session.server.attributes['ui.disableLoginLanguage']);
-  const changeEnabled = useSelector((state) => !state.session.server.attributes.disableChange);
   const emailEnabled = useSelector((state) => state.session.server.emailEnabled);
   const openIdEnabled = useSelector((state) => state.session.server.openIdEnabled);
   const openIdForced = useSelector((state) => state.session.server.openIdEnabled && state.session.server.openIdForce);
@@ -150,29 +150,7 @@ const LoginPage = () => {
 
   return (
     <LoginLayout>
-      <div className={classes.options}>
-        {nativeEnvironment && changeEnabled && (
-          <Tooltip title={t('settingsServer')}>
-            <IconButton onClick={() => navigate('/change-server')}>
-              <LockOpenIcon />
-            </IconButton>
-          </Tooltip>
-        )}
-        {languageEnabled && (
-          <FormControl>
-            <Select value={language} onChange={(e) => setLanguage(e.target.value)}>
-              {languageList.map((it) => (
-                <MenuItem key={it.code} value={it.code}>
-                  <Box component="span" sx={{ mr: 1 }}>
-                    <ReactCountryFlag countryCode={it.country} svg />
-                  </Box>
-                  {it.name}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
-        )}
-      </div>
+      
       <div className={classes.container}>
         {useMediaQuery(theme.breakpoints.down('lg')) && <LogoImage color={theme.palette.primary.main} />}
         <TextField
