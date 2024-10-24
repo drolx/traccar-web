@@ -1,5 +1,5 @@
 export default {
-  sidebarWidth: '28%',
+  sidebarWidth: '32%',
   sidebarWidthTablet: '52px',
   deviceWidthDesktop: '360px',
   drawerWidthDesktop: '260px',

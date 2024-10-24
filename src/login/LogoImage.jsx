@@ -6,11 +6,15 @@ import Logo from '../resources/images/logo.svg?react';
 const useStyles = makeStyles()((theme) => ({
   image: {
     alignSelf: 'center',
-    maxWidth: '240px',
-    maxHeight: '120px',
+    maxWidth: '124px',
+    maxHeight: '64px',
     width: 'auto',
     height: 'auto',
-    margin: theme.spacing(2),
+    margin: theme.spacing(0.2),
+    [theme.breakpoints.down('md')]: {
+      maxWidth: '240px',
+      maxHeight: '120px',
+    },
   },
 }));
 
