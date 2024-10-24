@@ -39,7 +39,7 @@ const useStyles = makeStyles((theme) => ({
     left: 0,
     top: 0,
     margin: theme.spacing(1.5),
-    width: theme.dimensions.drawerWidthDesktop,
+    width: theme.dimensions.deviceWidthDesktop,
     [theme.breakpoints.down('md')]: {
       width: '100%',
       margin: 0,

@@ -41,7 +41,7 @@ const useStyles = makeStyles((theme) => ({
   drawerPaper: {
     position: 'relative',
     [theme.breakpoints.up('sm')]: {
-      width: theme.dimensions.drawerWidthDesktop,
+      width: theme.dimensions.deviceWidthDesktop,
     },
     [theme.breakpoints.down('sm')]: {
       height: theme.dimensions.drawerHeightPhone,
