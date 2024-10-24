@@ -3,7 +3,7 @@ import LoginLayout from './LoginLayout';
 const FaqPage = () => {
 
     return (
-        <LoginLayout>
+        <LoginLayout isForm={false}>
             <div>{'support.faqs'}</div>
         </LoginLayout>
     )
