@@ -145,7 +145,6 @@ const LoginPage = () => {
 
   return (
     <LoginLayout>
-      
       <div className={classes.container}>
         {useMediaQuery(theme.breakpoints.down('lg')) && <LogoImage color={theme.palette.primary.main} />}
         <TextField

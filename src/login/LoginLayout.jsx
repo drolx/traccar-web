@@ -1,4 +1,5 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { useMediaQuery, Paper, Select, FormControl, Tooltip, Box, MenuItem, Typography, Link } from '@mui/material';
 import { useLocalization, useTranslation } from '../common/components/LocalizationProvider';
@@ -94,6 +95,7 @@ const useStyles = makeStyles()((theme) => ({
 const LoginLayout = ({ children }) => {
   const { classes } = useStyles();
   const theme = useTheme();
+  const navigate = useNavigate();
   const t = useTranslation();
 
   const { languages, language, setLanguage } = useLocalization();
@@ -109,21 +111,16 @@ const LoginLayout = ({ children }) => {
       </div>
       <Paper className={classes.paper}>
         <div className={classes.header}>
-          <span className={classes.headerLogo}>
+          <Link className={classes.headerLogo} href="/">
             <LogoImage color={theme.palette.secondary.contrastText} />
-          </span>
+          </Link>
           <Box className={classes.menu}>
-            <MenuItem className={classes.menuItem}>
-              <Typography variant="body1" color="text.primary">
-                {'Home'}
-              </Typography>
-            </MenuItem>
-            <MenuItem className={classes.menuItem}>
+            <MenuItem className={classes.menuItem} onClick={() => navigate("/support")}>
               <Typography variant="body1" color="text.primary">
                 {'Support'}
               </Typography>
             </MenuItem>
-            <MenuItem className={classes.menuItem}>
+            <MenuItem className={classes.menuItem} onClick={() => navigate("/faqs")}>
               <Typography variant="body1" color="text.primary">
                 {"FAQ's"}
               </Typography>
