@@ -1,0 +1,17 @@
+{
+    "email": "hello@drolx.com",
+    "phones": [
+        {
+            "phoneNumber": "2348030776365",
+            "label": "+234-803-077-6365"
+        },
+        {
+            "phoneNumber": "2348062957703",
+            "label": "+234-806-295-7703"
+        }
+    ],
+    "whatsApp": {
+        "label": "+234-806-295-7703",
+        "link": "https://wa.link/z3mk2k"
+    }
+}
