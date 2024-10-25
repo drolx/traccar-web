@@ -34,6 +34,8 @@ import CommandsPage from './settings/CommandsPage';
 import CommandPage from './settings/CommandPage';
 import StatisticsPage from './reports/StatisticsPage';
 import LoginPage from './login/LoginPage';
+import FaqPage from './login/FaqPage';
+import SupportPage from './login/SupportPage';
 import RegisterPage from './login/RegisterPage';
 import ResetPasswordPage from './login/ResetPasswordPage';
 import GeofencesPage from './other/GeofencesPage';
@@ -71,7 +73,9 @@ const Navigation = () => {
   useEffectAsync(async () => {
     if (query.get('token')) {
       const token = query.get('token');
-      await fetch(`/api/session?token=${encodeURIComponent(token)}`);
+      await fetch(`/api/session?token=${encodeURIComponent(token)}`, {
+        method: 'GET',
+      });
       navigate(pathname);
     } else if (query.get('deviceId')) {
       const deviceId = query.get('deviceId');
@@ -102,6 +106,8 @@ const Navigation = () => {
       <Route path="/register" element={<RegisterPage />} />
       <Route path="/reset-password" element={<ResetPasswordPage />} />
       <Route path="/change-server" element={<ChangeServerPage />} />
+      <Route path="/support" element={<SupportPage />} />
+      <Route path="/faqs" element={<FaqPage />} />
       <Route path="/" element={<App />}>
         <Route index element={<MainPage />} />
 
