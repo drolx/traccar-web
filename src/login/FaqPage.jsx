@@ -15,7 +15,7 @@ const FaqPage = () => {
                 </Typography>
                 <Paper sx={{ marginTop: 5 }}>
                     {Faqs.map((faq, index) => (
-                        <Accordion defaultExpanded={index === 0}>
+                        <Accordion key={index} defaultExpanded={index === 0}>
                             <AccordionSummary
                                 expandIcon={<ExpandMoreIcon />}
                                 aria-controls={`panel-content-${index}`}

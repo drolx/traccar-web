@@ -39,8 +39,8 @@ const SupportPage = () => {
                                     </Typography>
                                     <Divider sx={{ margin: theme.spacing(1, 0) }} />
                                     {
-                                        Contacts.phones.map(phone => (
-                                            <Link sx={{ margin: theme.spacing(0, 1) }} underline="none" href={`tel:${phone.phoneNumber}`}>
+                                        Contacts.phones.map((phone, index) => (
+                                            <Link key={index} sx={{ margin: theme.spacing(0, 1) }} underline="none" href={`tel:${phone.phoneNumber}`}>
                                                 <Stack sx={{ gap: 3 }} direction="row" alignItems="center">
                                                     <Avatar>
                                                         <PhoneIcon />
