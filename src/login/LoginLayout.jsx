@@ -54,6 +54,7 @@ const useStyles = makeStyles()((theme) => ({
   headerLogo: {
     [theme.breakpoints.down('md')]: {
       display: 'none',
+      visibility: 'hidden'
     },
   },
   header: {
