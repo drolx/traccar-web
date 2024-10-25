@@ -52,6 +52,7 @@ const useStyles = makeStyles()((theme) => ({
     width: '100%',
   },
   headerLogo: {
+    display: 'flex',
     [theme.breakpoints.down('md')]: {
       display: 'none',
       visibility: 'hidden'
