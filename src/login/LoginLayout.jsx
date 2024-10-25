@@ -1,7 +1,7 @@
 import React from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import { useMediaQuery, Paper, Select, FormControl, Tooltip, Box, MenuItem, Typography, Link } from '@mui/material';
+import { useMediaQuery, Paper, Select, FormControl, Tooltip, IconButton, Box, MenuItem, Typography, Link } from '@mui/material';
 import { useLocalization, useTranslation } from '../common/components/LocalizationProvider';
 import ReactCountryFlag from 'react-country-flag';
 import LockOpenIcon from '@mui/icons-material/LockOpen';
@@ -10,6 +10,7 @@ import { useTheme } from '@mui/material/styles';
 import LogoImage from './LogoImage';
 import WelcomeImage from '../resources/images/welcome.svg?react';
 import { nativeEnvironment } from '../common/components/NativeInterface';
+import ServiceInfo from '../data/service.json';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -99,14 +100,6 @@ const useStyles = makeStyles((theme) => ({
       visibility: 'hidden',
     },
   },
-  menuItemBack: {
-    padding: theme.spacing(4, 6),
-    [theme.breakpoints.up('md')]: {
-      padding: theme.spacing(2, 3),
-      display: 'none',
-      visibility: 'hidden',
-    },
-  }
 }));
 
 const LoginLayout = ({ children, isForm = true }) => {
@@ -126,9 +119,9 @@ const LoginLayout = ({ children, isForm = true }) => {
     <main className={classes.root}>
       <div className={classes.sidebar}>
         <div style={{ display: 'flex', alignItems: 'flex-start', width: '100%' }}>
-          <Link className={classes.headerLogo} href="/">
+          <IconButton disableRipple={true} className={classes.headerLogo} onClick={() => navigate("/")}>
             <LogoImage color={theme.palette.secondary.contrastText} />
-          </Link>
+          </IconButton>
         </div>
         <div style={{ height: '80%' }}>
           {!useMediaQuery(theme.breakpoints.down('lg')) && <WelcomeImage color={theme.palette.secondary.contrastText} />}
@@ -138,15 +131,15 @@ const LoginLayout = ({ children, isForm = true }) => {
         <div className={classes.header}>
           <Box className={classes.menu}>
             {location.pathname !== "/login" && (
-              <MenuItem className={classes.menuItemBack} onClick={() => navigate("/")}>
+              <MenuItem className={classes.menuItem} onClick={() => navigate("/login")}>
                 <Typography variant="body1" color="text.primary">
-                  {"Back"}
+                  {t('loginLogin')}
                 </Typography>
               </MenuItem>
             )}
             <MenuItem className={classes.menuItem} onClick={() => navigate("/support")}>
               <Typography variant="body1" color="text.primary">
-                {'Support'}
+                {t('settingsSupport')}
               </Typography>
             </MenuItem>
             <MenuItem className={classes.menuItemFaqs} onClick={() => navigate("/faqs")}>
@@ -182,18 +175,18 @@ const LoginLayout = ({ children, isForm = true }) => {
             {children}
           </form>
         ) : (
-          <div style={{ height: '100%' }}>
+          <div style={{ height: '100%', width: '100%', overflow: 'scroll', }}>
             {children}
           </div>)}
         <div
           className={classes.footer}>
-          <Typography>Powered by <Link underline="none" target="_blank" href="https://drolx.com" color="primary">drolx Labs</Link></Typography>
+          <Typography>{ServiceInfo.dev.attribution} <Link underline="none" target="_blank" href={ServiceInfo.dev.link} color="primary">{ServiceInfo.dev.name}</Link></Typography>
           <Typography className={classes.footerCompany}>
             &copy;&nbsp;
             {(new Date()).getFullYear()}
             <span>,&nbsp;</span>
-            <Link underline="none" target="_blank" href="https://gpstrack.ng" color="primary">{'Tang Telematics'}</Link>
-            <span>,&nbsp;{'All rights reserved.'}</span>
+            <Link underline="none" target="_blank" href={ServiceInfo.company.link} color="primary">{ServiceInfo.company.name}</Link>
+            <span>,&nbsp;{ServiceInfo.company.attribution}</span>
           </Typography>
         </div>
       </Paper>
