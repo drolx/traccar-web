@@ -102,14 +102,6 @@ const useStyles = makeStyles()((theme) => ({
       visibility: 'hidden',
     },
   },
-  menuItemBack: {
-    padding: theme.spacing(4, 6),
-    [theme.breakpoints.up('md')]: {
-      padding: theme.spacing(2, 3),
-      display: 'none',
-      visibility: 'hidden',
-    },
-  }
 }));
 
 const LoginLayout = ({ children, isForm = true }) => {
