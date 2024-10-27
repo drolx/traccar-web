@@ -49,7 +49,9 @@ const App = () => {
 
   useEffectAsync(async () => {
     if (!user) {
-      const response = await fetch('/api/session');
+      const response = await fetch('/api/session', {
+        method: 'GET',
+      });
       if (response.ok) {
         dispatch(sessionActions.updateUser(await response.json()));
       } else if (newServer) {
