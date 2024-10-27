@@ -103,13 +103,6 @@ const useStyles = makeStyles()((theme) => ({
       visibility: 'hidden',
     },
   },
-  menuItemFaqs: {
-    padding: theme.spacing(4, 6),
-    [theme.breakpoints.down('md')]: {
-      display: 'none',
-      visibility: 'hidden',
-    },
-  },
   menuItemBack: {
     padding: theme.spacing(4, 6),
     [theme.breakpoints.up('md')]: {
