@@ -47,7 +47,7 @@
   "scripts": {
     "start": "vite",
     "build": "vite build",
-    "start:custom": "VITE_SERVER_PROTOCOL=https: VITE_SERVER_URL=demo.traccar.org vite",
+    "start:custom": "VITE_SERVER_PROTOCOL=https: VITE_SERVER_URL=gpstrack.drolx.com vite",
     "dev": "npm run start:custom",
     "build:app": "npm run start:custom build",
     "tauri": "tauri",
@@ -76,7 +76,7 @@
     ]
   },
   "devDependencies": {
-    "@tauri-apps/cli": "^2.0.0-rc.18",
+    "@tauri-apps/cli": "^2.1.0",
     "@vite-pwa/assets-generator": "^0.2.6",
     "eslint": "^8.57.0",
     "eslint-config-airbnb": "^19.0.4",
