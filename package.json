@@ -45,7 +45,7 @@
   "scripts": {
     "start": "vite --host",
     "build": "vite build",
-    "start:custom": "VITE_SERVER_PROTOCOL=https: VITE_SERVER_URL=demo.traccar.org vite",
+    "start:custom": "VITE_SERVER_PROTOCOL=https: VITE_SERVER_URL=gpstrack.drolx.com vite",
     "dev": "npm run start:custom",
     "build:app": "npm run start:custom build",
     "tauri": "tauri",
