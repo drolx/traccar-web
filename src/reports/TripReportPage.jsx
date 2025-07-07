@@ -55,7 +55,7 @@ const TripReportPage = () => {
   const speedUnit = useAttributePreference('speedUnit');
   const volumeUnit = useAttributePreference('volumeUnit');
 
-  const [columns, setColumns] = usePersistedState('tripColumns', ['startTime', 'endTime', 'distance', 'averageSpeed']);
+  const [columns, setColumns] = usePersistedState('tripColumns', ['duration', 'startAddress', 'endAddress', 'distance', 'maxSpeed', 'startTime', 'endTime']);
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(false);
   const [selectedItem, setSelectedItem] = useState(null);
@@ -186,7 +186,7 @@ const TripReportPage = () => {
               <ColumnSelect columns={columns} setColumns={setColumns} columnsArray={columnsArray} />
             </ReportFilter>
           </div>
-          <Table>
+          <Table size="small" stickyHeader>
             <TableHead>
               <TableRow>
                 <TableCell className={classes.columnAction} />
