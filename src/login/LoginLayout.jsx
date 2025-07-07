@@ -19,10 +19,11 @@ const useStyles = makeStyles()((theme) => ({
   },
   sidebar: {
     display: 'flex',
-    justifyContent: 'center',
+    flexDirection: 'column',
+    justifyContent: 'space-between',
     alignItems: 'center',
     background: theme.palette.primary.main,
-    padding: theme.spacing(3),
+    padding: theme.spacing(0.1, 2, 3, 2),
     width: theme.dimensions.sidebarWidth,
     [theme.breakpoints.down('lg')]: {
       width: theme.dimensions.sidebarWidthTablet,
@@ -61,6 +62,7 @@ const useStyles = makeStyles()((theme) => ({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
+    padding: theme.spacing(1, 0),
     [theme.breakpoints.down('md')]: {
       padding: theme.spacing(0, 2),
     },
@@ -108,8 +110,8 @@ const useStyles = makeStyles()((theme) => ({
   }
 }));
 
-const LoginLayout = ({ children }) => {
-  const { classes } = useStyles();
+const LoginLayout = ({ children, isForm = true }) => {
+  const classes = useStyles();
   const theme = useTheme();
   const navigate = useNavigate();
   const location = useLocation();
@@ -132,13 +134,17 @@ const LoginLayout = ({ children }) => {
   return (
     <main className={classes.root}>
       <div className={classes.sidebar}>
-        {!useMediaQuery(theme.breakpoints.down('lg')) && <WelcomeImage color={theme.palette.secondary.contrastText} />}
-      </div>
-      <Paper className={classes.paper}>
-        <div className={classes.header}>
+        <div style={{ display: 'flex', alignItems: 'flex-start', width: '100%' }}>
           <Link className={classes.headerLogo} href="/">
             <LogoImage color={theme.palette.secondary.contrastText} />
           </Link>
+        </div>
+        <div style={{ height: '80%' }}>
+          {!useMediaQuery(theme.breakpoints.down('lg')) && <WelcomeImage color={theme.palette.secondary.contrastText} />}
+        </div>
+      </div>
+      <Paper className={classes.paper}>
+        <div className={classes.header}>
           <Box className={classes.menu}>
             {location.pathname !== "/login" && (
               <MenuItem className={classes.menuItemBack} onClick={() => navigate("/")}>
@@ -184,11 +190,14 @@ const LoginLayout = ({ children }) => {
             </FormControl>
           )}
         </div>
-
-        <form className={classes.form}>
-          {children}
-        </form>
-
+        {isForm ? (
+          <form className={classes.form}>
+            {children}
+          </form>
+        ) : (
+          <div style={{ height: '100%' }}>
+            {children}
+          </div>)}
         <div
           className={classes.footer}>
           <Typography>Powered by <Link underline="none" target="_blank" href="https://drolx.com" color="primary">drolx Labs</Link></Typography>

@@ -2,7 +2,7 @@ import LoginLayout from './LoginLayout';
 
 const SupportPage = () => {
     return (
-        <LoginLayout>
+        <LoginLayout isForm={false}>
             <div>{'support.information'}</div>
         </LoginLayout>
     )
