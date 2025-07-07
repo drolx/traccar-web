@@ -11,7 +11,9 @@ import {
   useMediaQuery,
   useTheme,
 } from '@mui/material';
-import { makeStyles } from 'tss-react/mui';
+import { makeStyles } from '@mui/styles/makeStyles';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import MapIcon from '@mui/icons-material/Home';
 import MenuIcon from '@mui/icons-material/Menu';
 import { useNavigate, useLocation } from 'react-router-dom';
 import DesktopMenu from './DesktopMenu';
@@ -115,7 +117,12 @@ const PageLayout = ({ menu, breadcrumbs, children }) => {
             </IconButton>
             <PageTitle breadcrumbs={breadcrumbs} />
           </Stack>
-          <DesktopMenu />
+          <Stack direction="row">
+            <IconButton color="inherit" edge="start" sx={{ mr: 2 }} onClick={() => navigate('/')}>
+              <MapIcon />
+            </IconButton>
+            <DesktopMenu />
+          </Stack>
         </Toolbar>
         <div className={classes.content}>
           {children}
