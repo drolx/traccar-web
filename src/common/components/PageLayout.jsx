@@ -2,21 +2,20 @@ import { useState } from 'react';
 import {
   AppBar,
   Breadcrumbs,
-  Divider,
   Drawer,
   IconButton,
+  List,
+  Stack,
   Toolbar,
   Typography,
   useMediaQuery,
   useTheme,
 } from '@mui/material';
 import { makeStyles } from 'tss-react/mui';
-import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
-import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import MenuIcon from '@mui/icons-material/Menu';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
+import DesktopMenu from './DesktopMenu';
 import { useTranslation } from './LocalizationProvider';
-import BackIcon from './BackIcon';
 
 const useStyles = makeStyles()((theme, { miniVariant }) => ({
   desktopRoot: {
@@ -41,12 +40,19 @@ const useStyles = makeStyles()((theme, { miniVariant }) => ({
   mobileToolbar: {
     zIndex: 1,
   },
+  desktopHeader: {
+    width: '100%',
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
   content: {
     flexGrow: 1,
     alignItems: 'stretch',
     display: 'flex',
     flexDirection: 'column',
     overflowY: 'auto',
+    padding: 10,
   },
 }));
 
@@ -76,6 +82,7 @@ const PageLayout = ({ menu, breadcrumbs, children }) => {
   const { classes } = useStyles({ miniVariant });
   const theme = useTheme();
   const navigate = useNavigate();
+  const location = useLocation();
 
   const desktop = useMediaQuery(theme.breakpoints.up('md'));
 
@@ -85,28 +92,35 @@ const PageLayout = ({ menu, breadcrumbs, children }) => {
 
   return desktop ? (
     <div className={classes.desktopRoot}>
-      <Drawer
-        variant="permanent"
-        className={classes.desktopDrawer}
-        classes={{ paper: classes.desktopDrawer }}
-      >
-        <Toolbar>
-          {!miniVariant && (
-            <>
-              <IconButton color="inherit" edge="start" sx={{ mr: 2 }} onClick={() => navigate('/')}>
-                <BackIcon />
-              </IconButton>
-              <PageTitle breadcrumbs={breadcrumbs} />
-            </>
-          )}
-          <IconButton color="inherit" edge="start" sx={{ ml: miniVariant ? -2 : 'auto' }} onClick={toggleDrawer}>
-            {(miniVariant !== (theme.direction === 'rtl')) ? <ChevronRightIcon /> : <ChevronLeftIcon />}
-          </IconButton>
+      {location.pathname.startsWith('/report') && (
+        <Drawer
+          variant="permanent"
+          className={classes.desktopDrawer}
+          classes={{ paper: classes.desktopDrawer }}
+        >
+          <List>
+            {menu}
+          </List>
+        </Drawer>
+      )}
+      <div style={{
+        width: '100%',
+        display: 'flex',
+        flexDirection: 'column'
+      }}>
+        <Toolbar className={classes.desktopHeader}>
+          <Stack direction="row">
+            <IconButton color="inherit" edge="start" sx={{ mr: 2 }} onClick={() => navigate(-1)}>
+              <ArrowBackIcon />
+            </IconButton>
+            <PageTitle breadcrumbs={breadcrumbs} />
+          </Stack>
+          <DesktopMenu />
         </Toolbar>
-        <Divider />
-        {menu}
-      </Drawer>
-      <div className={classes.content}>{children}</div>
+        <div className={classes.content}>
+          {children}
+        </div>
+      </div>
     </div>
   ) : (
     <div className={classes.mobileRoot}>
@@ -116,7 +130,9 @@ const PageLayout = ({ menu, breadcrumbs, children }) => {
         onClose={() => setOpenDrawer(false)}
         classes={{ paper: classes.mobileDrawer }}
       >
-        {menu}
+        <List>
+          {menu}
+        </List>
       </Drawer>
       <AppBar className={classes.mobileToolbar} position="static" color="inherit">
         <Toolbar>
