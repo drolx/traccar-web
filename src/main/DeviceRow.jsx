@@ -106,11 +106,13 @@ const DeviceRow = ({ data, index, style }) => {
   };
 
   const secondarySection = () => {
-    return (<div>
+    return (<>
       {position && (
-        <span>{position.address}</span>
+        <Tooltip title={`${position.latitude}, ${position.longitude}`}>
+          <span style={{ textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{position.address ?? `${position.latitude}, ${position.longitude}` }</span>
+        </Tooltip>
       )}
-    </div>)
+    </>)
   };
 
   return (
