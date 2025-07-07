@@ -11,6 +11,7 @@ import { useCatchCallback } from '../reactHelper';
 import { findFonts } from './core/mapUtil';
 
 const MapPositions = ({ positions, onMapClick, onMarkerClick, showStatus, selectedPosition, titleField }) => {
+  const t = useTranslation();
   const id = useId();
   const clusters = `${id}-clusters`;
   const selected = `${id}-selected`;
