@@ -105,13 +105,13 @@ const DeviceRow = ({ data, index, style }) => {
   const primarySection = () => {
     const time = dayjs(item.lastUpdate).fromNow() ?? 'None';
 
-    return (<div>
-      <div className={classes.mnimalText}>{time}</div>
-      <div>
+    return (<>
+      <span className={classes.mnimalText}>{time}</span>
+      <span>
         {item[devicePrimary]}
         {deviceSecondary && item[deviceSecondary] && ` • ${item[deviceSecondary]}`}
-      </div>
-    </div>)
+      </span>
+    </>)
   };
 
   const secondarySection = () => {
@@ -147,7 +147,7 @@ const DeviceRow = ({ data, index, style }) => {
           }}
         />
         {position && (
-          <div>
+          <div style={{ whiteSpace: 'nowrap' }}>
             <span className={classes.mnimalText}>{formatSpeed(position.speed, speedUnit, t)}</span>
             {position.attributes.hasOwnProperty('alarm') && (
               <Tooltip title={`${t('eventAlarm')}: ${formatAlarm(position.attributes.alarm, t)}`}>
