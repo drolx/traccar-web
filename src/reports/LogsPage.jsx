@@ -39,7 +39,7 @@ const LogsPage = () => {
 
   return (
     <PageLayout menu={<ReportsMenu />} breadcrumbs={['reportTitle', 'sharedLogs']}>
-      <Table>
+      <Table size="small" stickyHeader>
         <TableHead>
           <TableRow>
             <TableCell className={classes.columnAction} />

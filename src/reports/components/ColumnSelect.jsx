@@ -17,12 +17,13 @@ const ColumnSelect = ({
         <Select
           label={t('sharedColumns')}
           value={columns}
+          size="small"
           onChange={(e) => setColumns(e.target.value)}
           multiple
           disabled={disabled}
         >
           {columnsArray.map(([key, string]) => (
-            <MenuItem key={key} value={key}>{rawValues ? string : t(string)}</MenuItem>
+            <MenuItem size="small" key={key} value={key}>{rawValues ? string : t(string)}</MenuItem>
           ))}
         </Select>
       </FormControl>

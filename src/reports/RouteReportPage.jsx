@@ -26,7 +26,7 @@ import MapCamera from '../map/MapCamera';
 import MapGeofence from '../map/MapGeofence';
 import scheduleReport from './common/scheduleReport';
 import MapScale from '../map/MapScale';
-import { useRestriction } from '../common/util/permissions';
+import { useRestriction, useDeviceReadonly } from '../common/util/permissions';
 import CollectionActions from '../settings/components/CollectionActions';
 
 const RouteReportPage = () => {
@@ -38,9 +38,10 @@ const RouteReportPage = () => {
 
   const devices = useSelector((state) => state.devices.items);
   const readonly = useRestriction('readonly');
+  const deviceReadonly = useDeviceReadonly();
 
   const [available, setAvailable] = useState([]);
-  const [columns, setColumns] = useState(['fixTime', 'latitude', 'longitude', 'speed', 'address']);
+  const [columns, setColumns] = useState(['fixTime', 'speed', 'address', 'course', 'latitude', 'longitude']);
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(false);
   const [selectedItem, setSelectedItem] = useState(null);
@@ -144,7 +145,7 @@ const RouteReportPage = () => {
               />
             </ReportFilter>
           </div>
-          <Table>
+          <Table size="small" stickyHeader>
             <TableHead>
               <TableRow>
                 <TableCell className={classes.columnAction} />
@@ -181,7 +182,7 @@ const RouteReportPage = () => {
                     <CollectionActions
                       itemId={item.id}
                       endpoint="positions"
-                      readonly={readonly}
+                      readonly={readonly || deviceReadonly}
                       setTimestamp={() => {
                         // NOTE: Gets called when an item was removed
                         setItems(items.filter((position) => position.id !== item.id));
