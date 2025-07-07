@@ -1,7 +1,9 @@
 import { useEffect, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import { useMediaQuery, Paper, Select, FormControl, Tooltip, IconButton, Box, MenuItem, Typography, Link } from '@mui/material';
+import {
+ useMediaQuery, Paper, Select, FormControl, Tooltip, IconButton, Box, MenuItem, Typography, Link 
+} from '@mui/material';
 import { useLocalization, useTranslation } from '../common/components/LocalizationProvider';
 import ReactCountryFlag from 'react-country-flag';
 import VpnLockIcon from '@mui/icons-material/VpnLock';

@@ -1,5 +1,7 @@
 import LoginLayout from './LoginLayout';
-import { Avatar, Paper, Card, CardActionArea, CardMedia, CardContent, Stack, Typography, Link, Divider } from '@mui/material';
+import {
+ Avatar, Paper, Card, CardActionArea, CardMedia, CardContent, Stack, Typography, Link, Divider 
+} from '@mui/material';
 import PhoneIcon from '@mui/icons-material/Phone';
 import EmailIcon from '@mui/icons-material/Email';
 import ChatBubbleIcon from '@mui/icons-material/ChatBubble';

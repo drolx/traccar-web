@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import {
-  useMediaQuery, Button, TextField, Link, Snackbar, IconButton, InputAdornment,
+  useMediaQuery, Button, TextField, Link, Snackbar, IconButton,
 } from '@mui/material';
 import { makeStyles } from 'tss-react/mui';
 import CloseIcon from '@mui/icons-material/Close';
@@ -16,7 +16,7 @@ import { useTranslation } from '../common/components/LocalizationProvider';
 import LoginLayout from './LoginLayout';
 import usePersistedState from '../common/util/usePersistedState';
 import {
-  generateLoginToken, handleLoginTokenListeners, nativeEnvironment, nativePostMessage,
+  generateLoginToken, handleLoginTokenListeners, nativePostMessage,
 } from '../common/components/NativeInterface';
 import LogoImage from './LogoImage';
 import { useCatch } from '../reactHelper';
