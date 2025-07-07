@@ -1,8 +1,7 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { makeStyles } from 'tss-react/mui';
 import {
-  IconButton, Tooltip, Avatar, ListItemAvatar, ListItemText, ListItemButton,
-  Typography,
+  IconButton, Tooltip, ListItemText, ListItemButton,
 } from '@mui/material';
 import BatteryFullIcon from '@mui/icons-material/BatteryFull';
 import BatteryChargingFullIcon from '@mui/icons-material/BatteryChargingFull';
@@ -59,6 +58,34 @@ const useStyles = makeStyles()((theme) => ({
   selected: {
     backgroundColor: theme.palette.action.selected,
   },
+  successBackground: {
+    backgroundColor: theme.palette.success.main,
+  },
+  warningBackground: {
+    backgroundColor: theme.palette.warning.main,
+  },
+  errorBackground: {
+    backgroundColor: theme.palette.error.main,
+  },
+  neutralBackground: {
+    backgroundColor: theme.palette.neutral.main,
+  },
+  nameText: {
+
+  },
+  mnimalText: {
+    fontSize: '0.75rem',
+    marginRight: '0.3rem',
+  },
+  deviceStatusRoot: {
+    minWidth: 12,
+    alignItems: 'center'
+  },
+  deviceStatus: {
+    width: '10px',
+    height: '10px',
+    borderRadius: '5px',
+  },
 }));
 
 const DeviceRow = ({ data, index, style }) => {
@@ -113,9 +140,11 @@ const DeviceRow = ({ data, index, style }) => {
         </ListItemIcon>
         <ListItemText
           primary={primarySection()}
-          primaryTypographyProps={{ noWrap: true, fontSize: '0.85rem' }}
           secondary={secondarySection()}
-          secondaryTypographyProps={{ noWrap: true, fontSize: '0.7rem' }}
+          slotProps={{
+            primary: { noWrap: true, fontSize: '0.85rem' },
+            secondary: { noWrap: true, fontSize: '0.7rem' },
+          }}
         />
         {position && (
           <div>
