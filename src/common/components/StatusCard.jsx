@@ -1,10 +1,7 @@
 import { useState } from 'react';
-import { useSelector } from 'react-redux';
 import { useNavigate, Link as RouterLink } from 'react-router-dom';
 import { Rnd } from 'react-rnd';
-import { useState } from 'react';
 import { useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
 import {
   Card,
   CardContent,
@@ -22,7 +19,7 @@ import {
   TableFooter,
   Link,
 } from '@mui/material';
-import makeStyles from '@mui/styles/makeStyles';;
+import { makeStyles } from 'tss-react/mui';
 import CloseIcon from '@mui/icons-material/Cancel';
 import ReplayIcon from '@mui/icons-material/Repeat';
 import PublishIcon from '@mui/icons-material/Publish';
