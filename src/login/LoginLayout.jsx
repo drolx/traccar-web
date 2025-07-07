@@ -1,4 +1,3 @@
-import React from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { useMediaQuery, Paper, Select, FormControl, Tooltip, IconButton, Box, MenuItem, Typography, Link } from '@mui/material';
@@ -124,6 +123,14 @@ const LoginLayout = ({ children, isForm = true }) => {
 
   const languageEnabled = useSelector((state) => !state.session.server.attributes['ui.disableLoginLanguage']);
   const changeEnabled = useSelector((state) => !state.session.server.attributes.disableChange);
+  const [showServerTooltip, setShowServerTooltip] = useState(false);
+
+  useEffect(() => {
+    if (window.localStorage.getItem('hostname') !== window.location.hostname) {
+      window.localStorage.setItem('hostname', window.location.hostname);
+      setShowServerTooltip(true);
+    }
+  }, []);
 
   return (
     <main className={classes.root}>

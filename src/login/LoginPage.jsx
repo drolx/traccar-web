@@ -1,8 +1,7 @@
 import { useEffect, useState } from 'react';
 import {
-  useMediaQuery, Button, TextField, Link, Snackbar, IconButton, InputAdornment,
+  useMediaQuery, Button, TextField, Link, Snackbar, IconButton,
 } from '@mui/material';
-import ReactCountryFlag from 'react-country-flag';
 import { makeStyles } from 'tss-react/mui';
 import CloseIcon from '@mui/icons-material/Close';
 import VisibilityIcon from '@mui/icons-material/Visibility';
@@ -73,7 +72,6 @@ const LoginPage = () => {
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [code, setCode] = useState('');
-  const [showServerTooltip, setShowServerTooltip] = useState(false);
   const [showQr, setShowQr] = useState(false);
 
   const registrationEnabled = useSelector((state) => state.session.server.registration);
@@ -137,13 +135,6 @@ const LoginPage = () => {
     const listener = (token) => handleTokenLogin(token);
     handleLoginTokenListeners.add(listener);
     return () => handleLoginTokenListeners.delete(listener);
-  }, []);
-
-  useEffect(() => {
-    if (window.localStorage.getItem('hostname') !== window.location.hostname) {
-      window.localStorage.setItem('hostname', window.location.hostname);
-      setShowServerTooltip(true);
-    }
   }, []);
 
   if (openIdForced) {
@@ -247,6 +238,11 @@ const LoginPage = () => {
               {t('loginReset')}
             </Link>
           )}
+          {!nativeEnvironment && (
+          <IconButton color="primary" onClick={() => setShowQr(true)}>
+            <QrCode2Icon />
+          </IconButton>
+        )}
         </div>
       </div>
       <QrCodeDialog open={showQr} onClose={() => setShowQr(false)} />
