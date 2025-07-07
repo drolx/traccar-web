@@ -16,7 +16,7 @@ import { useTranslation } from '../common/components/LocalizationProvider';
 import LoginLayout from './LoginLayout';
 import usePersistedState from '../common/util/usePersistedState';
 import {
-  generateLoginToken, handleLoginTokenListeners, nativeEnvironment, nativePostMessage,
+  generateLoginToken, handleLoginTokenListeners, nativePostMessage,
 } from '../common/components/NativeInterface';
 import LogoImage from './LogoImage';
 import { useCatch } from '../reactHelper';

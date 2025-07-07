@@ -1,4 +1,4 @@
-import { TextField, useTheme, useMediaQuery } from '@mui/material';
+import { TextField } from '@mui/material';
 import { makeStyles } from 'tss-react/mui';
 import { useTranslation } from '../../common/components/LocalizationProvider';
 
@@ -16,11 +16,10 @@ const useStyles = makeStyles()((theme) => ({
 }));
 
 const SearchHeader = ({ keyword, setKeyword }) => {
-  const theme = useTheme();
+  // const theme = useTheme();
   const { classes } = useStyles();
   const t = useTranslation();
-
-  const phone = useMediaQuery(theme.breakpoints.down('sm'));
+  // const phone = useMediaQuery(theme.breakpoints.down('sm'));
 
   return (
     <div className={classes.header}>

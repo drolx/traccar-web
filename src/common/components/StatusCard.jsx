@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useNavigate, Link as RouterLink } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { Rnd } from 'react-rnd';
 import { useSelector } from 'react-redux';
 import {
@@ -16,8 +16,6 @@ import {
   Menu,
   MenuItem,
   CardMedia,
-  TableFooter,
-  Link,
 } from '@mui/material';
 import { makeStyles } from 'tss-react/mui';
 import CloseIcon from '@mui/icons-material/Cancel';
@@ -220,22 +218,19 @@ const StatusCard = ({ deviceId, position, onClose, disableActions, desktopPaddin
                 >
                   <CloseIcon />
                 </IconButton>
-
                 <IconButton
                   color="secondary"
-                  onClick={(e) => navigate(`/position/${position.id}`)}
+                  onClick={() => navigate(`/position/${position.id}`)}
                   disabled={!position}
                 >
                   <PendingIcon />
                 </IconButton>
-
                 <IconButton
                   onClick={(e) => setAnchorEl(e.currentTarget)}
                   disabled={!position}
                 >
                   <LocationIcon />
                 </IconButton>
-
                 <IconButton
                   onClick={() => navigate('/replay')}
                   disabled={disableActions || !position}
@@ -261,7 +256,7 @@ const StatusCard = ({ deviceId, position, onClose, disableActions, desktopPaddin
       </div>
       {position && (
         <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={() => setAnchorEl(null)}>
-          <MenuItem onClick={handleGeofence}>{t('sharedCreateGeofence')}</MenuItem>
+          { !readonly && <MenuItem onClick={handleGeofence}>{t('sharedCreateGeofence')}</MenuItem> }
           <MenuItem component="a" target="_blank" href={`https://www.google.com/maps/search/?api=1&query=${position.latitude}%2C${position.longitude}`}>{t('linkGoogleMaps')}</MenuItem>
           <MenuItem component="a" target="_blank" href={`http://maps.apple.com/?ll=${position.latitude},${position.longitude}`}>{t('linkAppleMaps')}</MenuItem>
           <MenuItem component="a" target="_blank" href={`https://www.google.com/maps/@?api=1&map_action=pano&viewpoint=${position.latitude}%2C${position.longitude}&heading=${position.course}`}>{t('linkStreetView')}</MenuItem>
