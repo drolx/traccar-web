@@ -80,7 +80,7 @@ const PageTitle = ({ breadcrumbs }) => {
 };
 
 const PageLayout = ({ menu, breadcrumbs, children }) => {
-  const [miniVariant, setMiniVariant] = useState(false);
+  const [miniVariant] = useState(false);
   const { classes } = useStyles({ miniVariant });
   const theme = useTheme();
   const navigate = useNavigate();
@@ -90,7 +90,7 @@ const PageLayout = ({ menu, breadcrumbs, children }) => {
 
   const [openDrawer, setOpenDrawer] = useState(false);
 
-  const toggleDrawer = () => setMiniVariant(!miniVariant);
+  // const toggleDrawer = () => setMiniVariant(!miniVariant);
 
   return desktop ? (
     <div className={classes.desktopRoot}>
@@ -112,13 +112,13 @@ const PageLayout = ({ menu, breadcrumbs, children }) => {
       }}>
         <Toolbar className={classes.desktopHeader}>
           <Stack direction="row">
-            <IconButton color="inherit" edge="start" sx={{ mr: 2 }} onClick={() => navigate(-1)}>
+            <IconButton color="inherit" edge="start" sx={{ mr: 2, borderRadius: 2 }} onClick={() => navigate(-1)}>
               <ArrowBackIcon />
             </IconButton>
             <PageTitle breadcrumbs={breadcrumbs} />
           </Stack>
           <Stack direction="row">
-            <IconButton color="inherit" edge="start" sx={{ mr: 2 }} onClick={() => navigate('/')}>
+            <IconButton color="inherit" edge="start" sx={{ mr: 2, borderRadius: 2 }} onClick={() => navigate('/')}>
               <MapIcon />
             </IconButton>
             <DesktopMenu />
