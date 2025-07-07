@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import Draggable from 'react-draggable';
+import { Rnd } from 'react-rnd';
+import { useSelector } from 'react-redux';
 import {
   Card,
   CardContent,
@@ -17,7 +17,7 @@ import {
   MenuItem,
   CardMedia,
 } from '@mui/material';
-import makeStyles from '@mui/styles/makeStyles';;
+import { makeStyles } from 'tss-react/mui';
 import CloseIcon from '@mui/icons-material/Cancel';
 import ReplayIcon from '@mui/icons-material/Repeat';
 import PublishIcon from '@mui/icons-material/Publish';
@@ -26,12 +26,12 @@ import PendingIcon from '@mui/icons-material/Pending';
 import LocationIcon from '@mui/icons-material/LocationSearching';
 import { useTranslation } from './LocalizationProvider';
 import PositionValue from './PositionValue';
-import { useDeviceReadonly } from '../util/permissions';
+import { useDeviceReadonly, useRestriction } from '../util/permissions';
 import usePositionAttributes from '../attributes/usePositionAttributes';
 import { useCatchCallback } from '../../reactHelper';
 import { useAttributePreference } from '../util/preferences';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles()((theme, { desktopPadding }) => ({
   card: {
     pointerEvents: 'auto',
     width: theme.dimensions.popupMaxWidth,
@@ -75,6 +75,9 @@ const useStyles = makeStyles((theme) => ({
       paddingLeft: 0,
       paddingRight: 0,
     },
+    '& .MuiTableCell-sizeSmall:first-of-type': {
+      paddingRight: theme.spacing(1),
+    },
   },
   cell: {
     borderBottom: 'none',
@@ -85,7 +88,7 @@ const useStyles = makeStyles((theme) => ({
   actions: {
     justifyContent: 'space-between',
   },
-  root: ({ desktopPadding }) => ({
+  root: {
     pointerEvents: 'none',
     position: 'fixed',
     zIndex: 5,
@@ -99,11 +102,11 @@ const useStyles = makeStyles((theme) => ({
       bottom: `calc(${theme.spacing(5)} + ${theme.dimensions.bottomBarHeight}px)`,
     },
     transform: 'translateX(-50%)',
-  }),
+  },
 }));
 
 const StatusRow = ({ name, content }) => {
-  const classes = useStyles();
+  const { classes } = useStyles({ desktopPadding: 0 });
 
   return (
     <TableRow>
@@ -118,10 +121,11 @@ const StatusRow = ({ name, content }) => {
 };
 
 const StatusCard = ({ deviceId, position, onClose, disableActions, desktopPadding = 0 }) => {
-  const classes = useStyles({ desktopPadding });
+  const { classes } = useStyles({ desktopPadding });
   const navigate = useNavigate();
   const t = useTranslation();
 
+  const readonly = useRestriction('readonly');
   const deviceReadonly = useDeviceReadonly();
 
   const shareDisabled = useSelector((state) => state.session.server.attributes.disableShare);
@@ -168,8 +172,11 @@ const StatusCard = ({ deviceId, position, onClose, disableActions, desktopPaddin
     <>
       <div className={classes.root}>
         {device && (
-          <Draggable
-            handle={`.${classes.media}, .${classes.header}`}
+          <Rnd
+            default={{ x: 0, y: 0, width: 'auto', height: 'auto' }}
+            enableResizing={false}
+            dragHandleClassName="draggable-header"
+            style={{ position: 'relative' }}
           >
             <Card elevation={3} className={classes.card}>
               <Stack className={classes.headerText} direction="row">
@@ -198,6 +205,7 @@ const StatusCard = ({ deviceId, position, onClose, disableActions, desktopPaddin
                           )}
                         />
                       ))}
+
                     </TableBody>
                   </Table>
                 </CardContent>
@@ -210,10 +218,9 @@ const StatusCard = ({ deviceId, position, onClose, disableActions, desktopPaddin
                 >
                   <CloseIcon />
                 </IconButton>
-
                 <IconButton
                   color="secondary"
-                  onClick={(e) => navigate(`/position/${position.id}`)}
+                  onClick={() => navigate(`/position/${position.id}`)}
                   disabled={!position}
                 >
                   <PendingIcon />
@@ -226,6 +233,12 @@ const StatusCard = ({ deviceId, position, onClose, disableActions, desktopPaddin
                   <LocationIcon />
                 </IconButton>
 
+                <IconButton
+                  onClick={(e) => setAnchorEl(e.currentTarget)}
+                  disabled={!position}
+                >
+                  <LocationIcon />
+                </IconButton>
                 <IconButton
                   onClick={() => navigate('/replay')}
                   disabled={disableActions || !position}
@@ -246,17 +259,19 @@ const StatusCard = ({ deviceId, position, onClose, disableActions, desktopPaddin
                 </IconButton>
               </CardActions>
             </Card>
-          </Draggable>
+          </Rnd>
         )}
       </div>
       {position && (
         <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={() => setAnchorEl(null)}>
-          <MenuItem onClick={handleGeofence}>{t('sharedCreateGeofence')}</MenuItem>
+          { !readonly && <MenuItem onClick={handleGeofence}>{t('sharedCreateGeofence')}</MenuItem> }
           <MenuItem component="a" target="_blank" href={`https://www.google.com/maps/search/?api=1&query=${position.latitude}%2C${position.longitude}`}>{t('linkGoogleMaps')}</MenuItem>
           <MenuItem component="a" target="_blank" href={`http://maps.apple.com/?ll=${position.latitude},${position.longitude}`}>{t('linkAppleMaps')}</MenuItem>
           <MenuItem component="a" target="_blank" href={`https://www.google.com/maps/@?api=1&map_action=pano&viewpoint=${position.latitude}%2C${position.longitude}&heading=${position.course}`}>{t('linkStreetView')}</MenuItem>
           {navigationAppTitle && <MenuItem component="a" target="_blank" href={navigationAppLink.replace('{latitude}', position.latitude).replace('{longitude}', position.longitude)}>{navigationAppTitle}</MenuItem>}
-          {!shareDisabled && !user.temporary && <MenuItem onClick={() => navigate(`/settings/device/${deviceId}/share`)}>{t('deviceShare')}</MenuItem>}
+          {!shareDisabled && !user.temporary && (
+            <MenuItem onClick={() => navigate(`/settings/device/${deviceId}/share`)}><Typography color="secondary">{t('deviceShare')}</Typography></MenuItem>
+          )}
         </Menu>
       )}
     </>

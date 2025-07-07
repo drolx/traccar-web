@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import dayjs from 'dayjs';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffectAsync } from '../../reactHelper';
 import { sessionActions } from '../../store';
@@ -8,9 +9,27 @@ export const nativeEnvironment = window.appInterface || (window.webkit && window
 export const nativePostMessage = (message) => {
   if (window.webkit && window.webkit.messageHandlers.appInterface) {
     window.webkit.messageHandlers.appInterface.postMessage(message);
-  }
-  if (window.appInterface) {
+  } else if (window.appInterface) {
     window.appInterface.postMessage(message);
+  }
+};
+
+export const generateLoginToken = async () => {
+  if (nativeEnvironment) {
+    let token = '';
+    try {
+      const expiration = dayjs().add(6, 'months').toISOString();
+      const response = await fetch('/api/session/token', {
+        method: 'POST',
+        body: new URLSearchParams(`expiration=${expiration}`),
+      });
+      if (response.ok) {
+        token = await response.text();
+      }
+    } catch {
+      token = '';
+    }
+    nativePostMessage(`login|${token}`);
   }
 };
 
@@ -22,6 +41,11 @@ window.handleLoginToken = (token) => {
 const updateNotificationTokenListeners = new Set();
 window.updateNotificationToken = (token) => {
   updateNotificationTokenListeners.forEach((listener) => listener(token));
+};
+
+export const handleNativeNotificationListeners = new Set();
+window.handleNativeNotification = (message) => {
+  handleNativeNotificationListeners.forEach((listener) => listener(message));
 };
 
 const NativeInterface = () => {

@@ -6,7 +6,7 @@ import { useEffect, useMemo } from 'react';
 
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { useTheme } from '@mui/styles';
+import { useTheme } from '@mui/material/styles';
 import { map } from '../core/MapView';
 import { findFonts, geofenceToFeature, geometryToArea } from '../core/mapUtil';
 import { errorsActions, geofencesActions } from '../../store';
@@ -62,7 +62,7 @@ const MapGeofenceEdit = ({ selectedGeofenceId }) => {
   useEffect(() => {
     refreshGeofences();
 
-    map.addControl(draw, 'top-left');
+    map.addControl(draw, theme.direction === 'rtl' ? 'top-right' : 'top-left');
     return () => map.removeControl(draw);
   }, [refreshGeofences]);
 

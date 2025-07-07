@@ -1,10 +1,10 @@
 import dayjs from 'dayjs';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import {
-  FormControl, InputLabel, Select, MenuItem,
+  FormControl, InputLabel, Select, MenuItem, useTheme,
 } from '@mui/material';
 import {
-  CartesianGrid, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis,
+  Brush, CartesianGrid, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis,
 } from 'recharts';
 import ReportFilter from './components/ReportFilter';
 import { formatTime } from '../common/util/formatter';
@@ -20,7 +20,8 @@ import {
 import useReportStyles from './common/useReportStyles';
 
 const ChartReportPage = () => {
-  const classes = useReportStyles();
+  const { classes } = useReportStyles();
+  const theme = useTheme();
   const t = useTranslation();
 
   const positionAttributes = usePositionAttributes(t);
@@ -32,12 +33,12 @@ const ChartReportPage = () => {
 
   const [items, setItems] = useState([]);
   const [types, setTypes] = useState(['speed']);
-  const [type, setType] = useState('speed');
+  const [selectedTypes, setSelectedTypes] = useState(['speed']);
   const [timeType, setTimeType] = useState('fixTime');
 
-  const values = items.map((it) => it[type]);
-  const minValue = Math.min(...values);
-  const maxValue = Math.max(...values);
+  const values = items.map((it) => selectedTypes.map((type) => it[type]).filter((value) => value != null));
+  const minValue = values.length ? Math.min(...values) : 0;
+  const maxValue = values.length ? Math.max(...values) : 100;
   const valueRange = maxValue - minValue;
 
   const handleSubmit = useCatch(async ({ deviceId, from, to }) => {
@@ -97,6 +98,16 @@ const ChartReportPage = () => {
     }
   });
 
+  const colorPalette = [
+    theme.palette.primary.main,
+    theme.palette.secondary.main,
+    theme.palette.error.main,
+    theme.palette.warning.main,
+    theme.palette.info.main,
+    theme.palette.success.main,
+    theme.palette.text.secondary,
+  ];
+
   return (
     <PageLayout menu={<ReportsMenu />} breadcrumbs={['reportTitle', 'reportChart']}>
       <ReportFilter handleSubmit={handleSubmit} showOnly>
@@ -105,8 +116,9 @@ const ChartReportPage = () => {
             <InputLabel>{t('reportChartType')}</InputLabel>
             <Select
               label={t('reportChartType')}
-              value={type}
-              onChange={(e) => setType(e.target.value)}
+              value={selectedTypes}
+              onChange={(e) => setSelectedTypes(e.target.value)}
+              multiple
               disabled={!items.length}
             >
               {types.map((key) => (
@@ -141,6 +153,7 @@ const ChartReportPage = () => {
               }}
             >
               <XAxis
+                stroke={theme.palette.text.primary}
                 dataKey={timeType}
                 type="number"
                 tickFormatter={(value) => formatTime(value, 'time')}
@@ -148,16 +161,33 @@ const ChartReportPage = () => {
                 scale="time"
               />
               <YAxis
+                stroke={theme.palette.text.primary}
                 type="number"
                 tickFormatter={(value) => value.toFixed(2)}
                 domain={[minValue - valueRange / 5, maxValue + valueRange / 5]}
               />
-              <CartesianGrid strokeDasharray="3 3" />
+              <CartesianGrid stroke={theme.palette.divider} strokeDasharray="3 3" />
               <Tooltip
+                wrapperStyle={{ backgroundColor: theme.palette.background.default, color: theme.palette.text.primary }}
                 formatter={(value, key) => [value, positionAttributes[key]?.name || key]}
                 labelFormatter={(value) => formatTime(value, 'seconds')}
               />
-              <Line type="monotone" dataKey={type} />
+              <Brush
+                dataKey={timeType}
+                height={30}
+                stroke={theme.palette.primary.main}
+                tickFormatter={() => ''}
+              />
+              {selectedTypes.map((type, index) => (
+                <Line
+                  type="monotone"
+                  dataKey={type}
+                  stroke={colorPalette[index % colorPalette.length]}
+                  dot={false}
+                  activeDot={{ r: 6 }}
+                  connectNulls
+                />
+              ))}
             </LineChart>
           </ResponsiveContainer>
         </div>

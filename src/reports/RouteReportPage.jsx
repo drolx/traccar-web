@@ -1,4 +1,6 @@
-import React, { Fragment, useCallback, useState } from 'react';
+import {
+  Fragment, useCallback, useEffect, useRef, useState,
+} from 'react';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import {
@@ -24,29 +26,42 @@ import MapCamera from '../map/MapCamera';
 import MapGeofence from '../map/MapGeofence';
 import scheduleReport from './common/scheduleReport';
 import MapScale from '../map/MapScale';
+import { useRestriction, useDeviceReadonly } from '../common/util/permissions';
+import CollectionActions from '../settings/components/CollectionActions';
 
 const RouteReportPage = () => {
   const navigate = useNavigate();
-  const classes = useReportStyles();
+  const { classes } = useReportStyles();
   const t = useTranslation();
 
   const positionAttributes = usePositionAttributes(t);
 
   const devices = useSelector((state) => state.devices.items);
+  const readonly = useRestriction('readonly');
+  const deviceReadonly = useDeviceReadonly();
 
   const [available, setAvailable] = useState([]);
-  const [columns, setColumns] = useState(['fixTime', 'latitude', 'longitude', 'speed', 'address']);
+  const [columns, setColumns] = useState(['fixTime', 'speed', 'address', 'course', 'latitude', 'longitude']);
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(false);
   const [selectedItem, setSelectedItem] = useState(null);
+
+  const selectedIcon = useRef();
+
+  useEffect(() => {
+    if (selectedIcon.current) {
+      selectedIcon.current.scrollIntoView({ block: 'center', behavior: 'smooth' });
+    }
+  }, [selectedIcon.current]);
 
   const onMapPointClick = useCallback((positionId) => {
     setSelectedItem(items.find((it) => it.id === positionId));
   }, [items, setSelectedItem]);
 
-  const handleSubmit = useCatch(async ({ deviceIds, from, to, type }) => {
+  const handleSubmit = useCatch(async ({ deviceIds, groupIds, from, to, type }) => {
     const query = new URLSearchParams({ from, to });
     deviceIds.forEach((deviceId) => query.append('deviceId', deviceId));
+    groupIds.forEach((groupId) => query.append('groupId', groupId));
     if (type === 'export') {
       window.location.assign(`/api/reports/route/xlsx?${query.toString()}`);
     } else if (type === 'mail') {
@@ -120,7 +135,7 @@ const RouteReportPage = () => {
         )}
         <div className={classes.containerMain}>
           <div className={classes.header}>
-            <ReportFilter handleSubmit={handleSubmit} handleSchedule={handleSchedule} multiDevice loading={loading}>
+            <ReportFilter handleSubmit={handleSubmit} handleSchedule={handleSchedule} multiDevice includeGroups loading={loading}>
               <ColumnSelect
                 columns={columns}
                 setColumns={setColumns}
@@ -130,12 +145,13 @@ const RouteReportPage = () => {
               />
             </ReportFilter>
           </div>
-          <Table>
+          <Table size="small" stickyHeader>
             <TableHead>
               <TableRow>
                 <TableCell className={classes.columnAction} />
                 <TableCell>{t('sharedDevice')}</TableCell>
                 {columns.map((key) => (<TableCell key={key}>{positionAttributes[key]?.name || key}</TableCell>))}
+                <TableCell className={classes.columnAction} />
               </TableRow>
             </TableHead>
             <TableBody>
@@ -143,7 +159,7 @@ const RouteReportPage = () => {
                 <TableRow key={item.id}>
                   <TableCell className={classes.columnAction} padding="none">
                     {selectedItem === item ? (
-                      <IconButton size="small" onClick={() => setSelectedItem(null)}>
+                      <IconButton size="small" onClick={() => setSelectedItem(null)} ref={selectedIcon}>
                         <GpsFixedIcon fontSize="small" />
                       </IconButton>
                     ) : (
@@ -162,6 +178,17 @@ const RouteReportPage = () => {
                       />
                     </TableCell>
                   ))}
+                  <TableCell className={classes.actionCellPadding}>
+                    <CollectionActions
+                      itemId={item.id}
+                      endpoint="positions"
+                      readonly={readonly || deviceReadonly}
+                      setTimestamp={() => {
+                        // NOTE: Gets called when an item was removed
+                        setItems(items.filter((position) => position.id !== item.id));
+                      }}
+                    />
+                  </TableCell>
                 </TableRow>
               )) : (<TableShimmer columns={columns.length + 2} startAction />)}
             </TableBody>

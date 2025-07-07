@@ -1,12 +1,11 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import {
   Divider, Typography, IconButton, Toolbar,
   Paper,
 } from '@mui/material';
 import Tooltip from '@mui/material/Tooltip';
-import makeStyles from '@mui/styles/makeStyles';
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import { makeStyles } from 'tss-react/mui';
 import UploadFileIcon from '@mui/icons-material/UploadFile';
 import { useNavigate } from 'react-router-dom';
 import MapView from '../map/core/MapView';
@@ -17,8 +16,9 @@ import { useTranslation } from '../common/components/LocalizationProvider';
 import MapGeocoder from '../map/geocoder/MapGeocoder';
 import { errorsActions } from '../store';
 import MapScale from '../map/MapScale';
+import BackIcon from '../common/components/BackIcon';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles()((theme) => ({
   root: {
     height: '100%',
     display: 'flex',
@@ -55,7 +55,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const GeofencesPage = () => {
-  const classes = useStyles();
+  const { classes } = useStyles();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const t = useTranslation();
@@ -102,7 +102,7 @@ const GeofencesPage = () => {
         <Paper square className={classes.drawer}>
           <Toolbar>
             <IconButton edge="start" sx={{ mr: 2 }} onClick={() => navigate(-1)}>
-              <ArrowBackIcon />
+              <BackIcon />
             </IconButton>
             <Typography variant="h6" className={classes.title}>{t('sharedGeofences')}</Typography>
             <label htmlFor="upload-gpx">

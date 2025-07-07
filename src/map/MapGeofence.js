@@ -1,6 +1,6 @@
 import { useId, useEffect } from 'react';
 import { useSelector } from 'react-redux';
-import { useTheme } from '@mui/styles';
+import { useTheme } from '@mui/material/styles';
 import { map } from './core/MapView';
 import { findFonts, geofenceToFeature } from './core/mapUtil';
 import { useAttributePreference } from '../common/util/preferences';
@@ -43,7 +43,8 @@ const MapGeofence = () => {
         type: 'line',
         paint: {
           'line-color': ['get', 'color'],
-          'line-width': 2,
+          'line-width': ['get', 'width'],
+          'line-opacity': ['get', 'opacity'],
         },
       });
       map.addLayer({
@@ -83,7 +84,9 @@ const MapGeofence = () => {
     if (mapGeofences) {
       map.getSource(id)?.setData({
         type: 'FeatureCollection',
-        features: Object.values(geofences).map((geofence) => geofenceToFeature(theme, geofence)),
+        features: Object.values(geofences)
+          .filter((geofence) => !geofence.attributes.hide)
+          .map((geofence) => geofenceToFeature(theme, geofence)),
       });
     }
   }, [mapGeofences, geofences]);

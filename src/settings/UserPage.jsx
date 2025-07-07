@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import {
   Accordion,
@@ -39,7 +39,7 @@ import { map } from '../map/core/MapView';
 import useSettingsStyles from './common/useSettingsStyles';
 
 const UserPage = () => {
-  const classes = useSettingsStyles();
+  const { classes } = useSettingsStyles();
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const t = useTranslation();
@@ -187,7 +187,7 @@ const UserPage = () => {
                 <InputLabel>{t('mapDefault')}</InputLabel>
                 <Select
                   label={t('mapDefault')}
-                  value={item.map || 'openFreeMap'}
+                  value={item.map || 'locationIqStreets'}
                   onChange={(e) => setItem({ ...item, map: e.target.value })}
                 >
                   {mapStyles.filter((style) => style.available).map((style) => (

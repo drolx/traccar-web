@@ -1,4 +1,3 @@
-import React from 'react';
 import {
   Divider, ListItemButton, ListItemIcon, ListItemText,
 } from '@mui/material';

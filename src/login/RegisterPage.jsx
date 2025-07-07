@@ -1,18 +1,18 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   Button, TextField, Typography, Snackbar, IconButton,
 } from '@mui/material';
-import makeStyles from '@mui/styles/makeStyles';
+import { makeStyles } from 'tss-react/mui';
 import { useNavigate } from 'react-router-dom';
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import LoginLayout from './LoginLayout';
 import { useTranslation } from '../common/components/LocalizationProvider';
 import { snackBarDurationShortMs } from '../common/util/duration';
 import { useCatch, useEffectAsync } from '../reactHelper';
 import { sessionActions } from '../store';
+import BackIcon from '../common/components/BackIcon';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles()((theme) => ({
   container: {
     display: 'flex',
     flexDirection: 'column',
@@ -31,7 +31,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const RegisterPage = () => {
-  const classes = useStyles();
+  const { classes } = useStyles();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const t = useTranslation();
@@ -76,7 +76,7 @@ const RegisterPage = () => {
         <div className={classes.header}>
           {!server.newServer && (
             <IconButton color="primary" onClick={() => navigate('/login')}>
-              <ArrowBackIcon />
+              <BackIcon />
             </IconButton>
           )}
           <Typography className={classes.title} color="primary">

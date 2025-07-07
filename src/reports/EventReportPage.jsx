@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
   FormControl, InputLabel, Select, MenuItem, Table, TableHead, TableRow, TableCell, TableBody, Link, IconButton,
@@ -8,8 +8,8 @@ import LocationSearchingIcon from '@mui/icons-material/LocationSearching';
 import { useSelector } from 'react-redux';
 import { formatSpeed, formatTime } from '../common/util/formatter';
 import ReportFilter from './components/ReportFilter';
-import { prefixString } from '../common/util/stringUtils';
-import { useTranslation } from '../common/components/LocalizationProvider';
+import { prefixString, unprefixString } from '../common/util/stringUtils';
+import { useTranslation, useTranslationKeys } from '../common/components/LocalizationProvider';
 import PageLayout from '../common/components/PageLayout';
 import ReportsMenu from './components/ReportsMenu';
 import usePersistedState from '../common/util/usePersistedState';
@@ -24,6 +24,7 @@ import MapPositions from '../map/MapPositions';
 import MapCamera from '../map/MapCamera';
 import scheduleReport from './common/scheduleReport';
 import MapScale from '../map/MapScale';
+import SelectField from '../common/components/SelectField';
 
 const columnsArray = [
   ['eventTime', 'positionFixTime'],
@@ -36,7 +37,7 @@ const columnsMap = new Map(columnsArray);
 
 const EventReportPage = () => {
   const navigate = useNavigate();
-  const classes = useReportStyles();
+  const { classes } = useReportStyles();
   const t = useTranslation();
 
   const devices = useSelector((state) => state.devices.items);
@@ -46,8 +47,14 @@ const EventReportPage = () => {
 
   const [allEventTypes, setAllEventTypes] = useState([['allEvents', 'eventAll']]);
 
+  const alarms = useTranslationKeys((it) => it.startsWith('alarm')).map((it) => ({
+    key: unprefixString('alarm', it),
+    name: t(it),
+  }));
+
   const [columns, setColumns] = usePersistedState('eventColumns', ['eventTime', 'type', 'attributes']);
   const [eventTypes, setEventTypes] = useState(['allEvents']);
+  const [alarmTypes, setAlarmTypes] = useState([]);
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(false);
   const [selectedItem, setSelectedItem] = useState(null);
@@ -79,9 +86,14 @@ const EventReportPage = () => {
     }
   }, []);
 
-  const handleSubmit = useCatch(async ({ deviceId, from, to, type }) => {
-    const query = new URLSearchParams({ deviceId, from, to });
+  const handleSubmit = useCatch(async ({ deviceIds, groupIds, from, to, type }) => {
+    const query = new URLSearchParams({ from, to });
+    deviceIds.forEach((deviceId) => query.append('deviceId', deviceId));
+    groupIds.forEach((groupId) => query.append('groupId', groupId));
     eventTypes.forEach((it) => query.append('type', it));
+    if (eventTypes[0] !== 'allEvents' && eventTypes.includes('alarm')) {
+      alarmTypes.forEach((it) => query.append('alarm', it));
+    }
     if (type === 'export') {
       window.location.assign(`/api/reports/events/xlsx?${query.toString()}`);
     } else if (type === 'mail') {
@@ -122,6 +134,8 @@ const EventReportPage = () => {
   const formatValue = (item, key) => {
     const value = item[key];
     switch (key) {
+      case 'deviceId':
+        return devices[value].name;
       case 'eventTime':
         return formatTime(value, 'seconds');
       case 'type':
@@ -169,15 +183,15 @@ const EventReportPage = () => {
         )}
         <div className={classes.containerMain}>
           <div className={classes.header}>
-            <ReportFilter handleSubmit={handleSubmit} handleSchedule={handleSchedule} loading={loading}>
+            <ReportFilter handleSubmit={handleSubmit} handleSchedule={handleSchedule} multiDevice includeGroups loading={loading}>
               <div className={classes.filterItem}>
                 <FormControl fullWidth>
                   <InputLabel>{t('reportEventTypes')}</InputLabel>
                   <Select
                     label={t('reportEventTypes')}
                     value={eventTypes}
-                    onChange={(event, child) => {
-                      let values = event.target.value;
+                    onChange={(e, child) => {
+                      let values = e.target.value;
                       const clicked = child.props.value;
                       if (values.includes('allEvents') && values.length > 1) {
                         values = [clicked];
@@ -192,13 +206,27 @@ const EventReportPage = () => {
                   </Select>
                 </FormControl>
               </div>
+              {eventTypes[0] !== 'allEvents' && eventTypes.includes('alarm') && (
+                <div className={classes.filterItem}>
+                  <SelectField
+                    multiple
+                    value={alarmTypes}
+                    onChange={(e) => setAlarmTypes(e.target.value)}
+                    data={alarms}
+                    keyGetter={(it) => it.key}
+                    label={t('sharedAlarms')}
+                    fullWidth
+                  />
+                </div>
+              )}
               <ColumnSelect columns={columns} setColumns={setColumns} columnsArray={columnsArray} />
             </ReportFilter>
           </div>
-          <Table>
+          <Table size="small" stickyHeader>
             <TableHead>
               <TableRow>
                 <TableCell className={classes.columnAction} />
+                <TableCell>{t('sharedDevice')}</TableCell>
                 {columns.map((key) => (<TableCell key={key}>{t(columnsMap.get(key))}</TableCell>))}
               </TableRow>
             </TableHead>
@@ -216,13 +244,14 @@ const EventReportPage = () => {
                       </IconButton>
                     ))) || ''}
                   </TableCell>
+                  <TableCell>{devices[item.deviceId].name}</TableCell>
                   {columns.map((key) => (
                     <TableCell key={key}>
                       {formatValue(item, key)}
                     </TableCell>
                   ))}
                 </TableRow>
-              )) : (<TableShimmer columns={columns.length + 1} />)}
+              )) : (<TableShimmer columns={columns.length + 2} />)}
             </TableBody>
           </Table>
         </div>

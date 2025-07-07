@@ -1,6 +1,6 @@
 import { useId, useEffect } from 'react';
 import { useSelector } from 'react-redux';
-import { useTheme } from '@mui/styles';
+import { useTheme } from '@mui/material/styles';
 import { map } from '../core/MapView';
 import { useAttributePreference } from '../../common/util/preferences';
 
@@ -15,6 +15,9 @@ const MapLiveRoutes = () => {
   const selectedDeviceId = useSelector((state) => state.devices.selectedId);
 
   const history = useSelector((state) => state.session.history);
+
+  const mapLineWidth = useAttributePreference('mapLineWidth', 2);
+  const mapLineOpacity = useAttributePreference('mapLineOpacity', 1);
 
   useEffect(() => {
     if (type !== 'none') {
@@ -38,7 +41,8 @@ const MapLiveRoutes = () => {
         },
         paint: {
           'line-color': ['get', 'color'],
-          'line-width': 2,
+          'line-width': ['get', 'width'],
+          'line-opacity': ['get', 'opacity'],
         },
       });
 
@@ -71,6 +75,8 @@ const MapLiveRoutes = () => {
           },
           properties: {
             color: devices[deviceId].attributes['web.reportColor'] || theme.palette.geometry.main,
+            width: mapLineWidth,
+            opacity: mapLineOpacity,
           },
         })),
       });

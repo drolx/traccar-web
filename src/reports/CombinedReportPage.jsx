@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import { useSelector } from 'react-redux';
 import {
   Table, TableBody, TableCell, TableHead, TableRow,
@@ -20,7 +20,7 @@ import MapRouteCoordinates from '../map/MapRouteCoordinates';
 import MapScale from '../map/MapScale';
 
 const CombinedReportPage = () => {
-  const classes = useReportStyles();
+  const { classes } = useReportStyles();
   const t = useTranslation();
 
   const devices = useSelector((state) => state.devices.items);
@@ -80,7 +80,7 @@ const CombinedReportPage = () => {
           <div className={classes.header}>
             <ReportFilter handleSubmit={handleSubmit} showOnly multiDevice includeGroups loading={loading} />
           </div>
-          <Table>
+          <Table size="small" stickyHeader>
             <TableHead>
               <TableRow>
                 <TableCell>{t('sharedDevice')}</TableCell>

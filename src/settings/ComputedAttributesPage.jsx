@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import {
   Table, TableRow, TableCell, TableHead, TableBody,
 } from '@mui/material';
@@ -14,7 +14,7 @@ import SearchHeader, { filterByKeyword } from './components/SearchHeader';
 import useSettingsStyles from './common/useSettingsStyles';
 
 const ComputedAttributesPage = () => {
-  const classes = useSettingsStyles();
+  const { classes } = useSettingsStyles();
   const t = useTranslation();
 
   const [timestamp, setTimestamp] = useState(Date.now());

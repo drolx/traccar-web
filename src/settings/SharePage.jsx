@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 import dayjs from 'dayjs';
@@ -20,7 +20,7 @@ import useSettingsStyles from './common/useSettingsStyles';
 
 const SharePage = () => {
   const navigate = useNavigate();
-  const classes = useSettingsStyles();
+  const { classes } = useSettingsStyles();
   const t = useTranslation();
 
   const { id } = useParams();

@@ -1,6 +1,10 @@
 import { useMemo } from 'react';
 
 export default (t) => useMemo(() => ({
+  'command.sender': {
+    name: t('deviceCommandSender'),
+    type: 'string',
+  },
   'web.reportColor': {
     name: t('attributeWebReportColor'),
     type: 'string',
@@ -20,6 +24,10 @@ export default (t) => useMemo(() => ({
   },
   'decoder.timezone': {
     name: t('sharedTimezone'),
+    type: 'string',
+  },
+  'forward.url': {
+    name: t('attributeForwardUrl'),
     type: 'string',
   },
 }), [t]);

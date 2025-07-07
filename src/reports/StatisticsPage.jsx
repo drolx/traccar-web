@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import {
   Table, TableRow, TableCell, TableHead, TableBody,
 } from '@mui/material';
@@ -28,7 +28,7 @@ const columnsArray = [
 const columnsMap = new Map(columnsArray);
 
 const StatisticsPage = () => {
-  const classes = useReportStyles();
+  const { classes } = useReportStyles();
   const t = useTranslation();
 
   const [columns, setColumns] = usePersistedState('statisticsColumns', ['captureTime', 'activeUsers', 'activeDevices', 'messagesStored']);
@@ -57,7 +57,7 @@ const StatisticsPage = () => {
           <ColumnSelect columns={columns} setColumns={setColumns} columnsArray={columnsArray} />
         </ReportFilter>
       </div>
-      <Table>
+      <Table size="small" stickyHeader>
         <TableHead>
           <TableRow>
             {columns.map((key) => (<TableCell key={key}>{t(columnsMap.get(key))}</TableCell>))}

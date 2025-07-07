@@ -1,6 +1,5 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import TextField from '@mui/material/TextField';
-
 import {
   Accordion,
   AccordionSummary,
@@ -19,7 +18,7 @@ import {
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { DropzoneArea } from 'react-mui-dropzone';
+import { MuiFileInput } from 'mui-file-input';
 import { sessionActions } from '../store';
 import EditAttributesAccordion from './components/EditAttributesAccordion';
 import { useTranslation } from '../common/components/LocalizationProvider';
@@ -35,7 +34,7 @@ import { map } from '../map/core/MapView';
 import useSettingsStyles from './common/useSettingsStyles';
 
 const ServerPage = () => {
-  const classes = useSettingsStyles();
+  const { classes } = useSettingsStyles();
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const t = useTranslation();
@@ -48,12 +47,11 @@ const ServerPage = () => {
   const original = useSelector((state) => state.session.server);
   const [item, setItem] = useState({ ...original });
 
-  const handleFiles = useCatch(async (files) => {
-    if (files.length > 0) {
-      const file = files[0];
-      const response = await fetch(`/api/server/file/${file.path}`, {
+  const handleFileChange = useCatch(async (newFile) => {
+    if (newFile) {
+      const response = await fetch(`/api/server/file/${newFile.name}`, {
         method: 'POST',
-        body: file,
+        body: newFile,
       });
       if (!response.ok) {
         throw Error(await response.text());
@@ -102,7 +100,7 @@ const ServerPage = () => {
                   <InputLabel>{t('mapDefault')}</InputLabel>
                   <Select
                     label={t('mapDefault')}
-                    value={item.map || 'openFreeMap'}
+                    value={item.map || 'locationIqStreets'}
                     onChange={(e) => setItem({ ...item, map: e.target.value })}
                   >
                     {mapStyles.filter((style) => style.available).map((style) => (
@@ -281,11 +279,10 @@ const ServerPage = () => {
                 </Typography>
               </AccordionSummary>
               <AccordionDetails className={classes.details}>
-                <DropzoneArea
-                  dropzoneText={t('sharedDropzoneText')}
-                  filesLimit={1}
-                  onChange={handleFiles}
-                  showAlerts={false}
+                <MuiFileInput
+                  placeholder={t('sharedSelectFile')}
+                  value={null}
+                  onChange={handleFileChange}
                 />
               </AccordionDetails>
             </Accordion>

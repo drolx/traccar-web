@@ -1,6 +1,6 @@
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from 'tss-react/mui';
 
-export default makeStyles((theme) => ({
+export default makeStyles()((theme) => ({
   container: {
     height: '100%',
     display: 'flex',
@@ -45,5 +45,11 @@ export default makeStyles((theme) => ({
   chart: {
     flexGrow: 1,
     overflow: 'hidden',
+  },
+  actionCellPadding: {
+    '&.MuiTableCell-body': {
+      paddingTop: 0,
+      paddingBottom: 0,
+    },
   },
 }));

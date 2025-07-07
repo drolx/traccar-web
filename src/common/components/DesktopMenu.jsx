@@ -5,11 +5,14 @@ import {
     Paper,
     Button,
     Avatar,
+    IconButton,
     Menu,
     ListItemButton,
     ListItemIcon,
     ListItemText,
     Divider,
+    Stack,
+    Tooltip,
     Typography,
 } from '@mui/material';
 import DescriptionIcon from '@mui/icons-material/Description';
@@ -68,13 +71,20 @@ const DesktopMenu = () => {
     };
     return (
         <Paper elevation={3}>
-            <Button color="primary" size="large" onClick={handleClick} sx={{ textTransform: 'none' }}>
-                <Avatar color="primary" sx={{ width: 32, height: 32, mr: 1 }}>
-                    <PersonIcon />
-                </Avatar>
-                <Typography sx={{ minWidth: 80 }}>{(user && user.name) ?? t('settingsUser')}</Typography>
-                <ArrowDropDown />
-            </Button>
+            <Stack direction="row">
+                <Tooltip title={t('reportTitle')}>
+                    <IconButton color="inherit" edge="start" sx={{ mr: 2, ml: 2, borderRadius: 2 }} onClick={() => navigate('/reports/route')}>
+                        <DescriptionIcon />
+                    </IconButton>
+                </Tooltip>
+                <Button color="primary" size="large" onClick={handleClick} sx={{ textTransform: 'none' }}>
+                    <Avatar color="primary" sx={{ width: 28, height: 28, mr: 1 }}>
+                        <PersonIcon />
+                    </Avatar>
+                    <Typography sx={{ minWidth: 80, textTransform: 'capitalize' }}>{(user && user.name) ?? t('settingsUser')}</Typography>
+                    <ArrowDropDown />
+                </Button>
+            </Stack>
             <Menu
                 anchorEl={anchorEl}
                 id="account-menu"
@@ -83,19 +93,15 @@ const DesktopMenu = () => {
                 onClick={handleClose}
                 transformOrigin={{ horizontal: 'right', vertical: 'top' }}
                 anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
-                PaperProps={{
-                    style: {
-                        width: '224px',
-                        marginTop: '8px',
-                    },
+                slotProps={{
+                    paper: {
+                        style: {
+                            width: '224px',
+                            marginTop: '8px',
+                        },
+                    }
                 }}
             >
-                <ListItemButton key="/reports/route" dense={true} component={Link} to="/reports/route">
-                    <ListItemIcon>
-                        <DescriptionIcon />
-                    </ListItemIcon>
-                    <ListItemText primary={t('reportTitle')} />
-                </ListItemButton>
                 <Divider />
                 <SettingsMenu dense={true} />
                 <Divider />

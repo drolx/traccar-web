@@ -1,10 +1,10 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   Table, TableRow, TableCell, TableHead, TableBody, IconButton, Tooltip,
 } from '@mui/material';
-import makeStyles from '@mui/styles/makeStyles';
+import { makeStyles } from 'tss-react/mui';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 import { useTranslation } from '../common/components/LocalizationProvider';
@@ -12,7 +12,7 @@ import PageLayout from '../common/components/PageLayout';
 import ReportsMenu from './components/ReportsMenu';
 import { sessionActions } from '../store';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles()((theme) => ({
   columnAction: {
     width: '1%',
     paddingLeft: theme.spacing(1),
@@ -20,7 +20,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const LogsPage = () => {
-  const classes = useStyles();
+  const { classes } = useStyles();
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const t = useTranslation();
@@ -38,8 +38,8 @@ const LogsPage = () => {
   };
 
   return (
-    <PageLayout menu={<ReportsMenu />} breadcrumbs={['reportTitle', 'statisticsTitle']}>
-      <Table>
+    <PageLayout menu={<ReportsMenu />} breadcrumbs={['reportTitle', 'sharedLogs']}>
+      <Table size="small" stickyHeader>
         <TableHead>
           <TableRow>
             <TableCell className={classes.columnAction} />
@@ -49,7 +49,7 @@ const LogsPage = () => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {items.map((item, index) => /* eslint-disable react/no-array-index-key */ (
+          {items.map((item, index) => (
             <TableRow key={index}>
               <TableCell className={classes.columnAction} padding="none">
                 {item.deviceId ? (

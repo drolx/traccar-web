@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import {
   AppBar,
   Breadcrumbs,
@@ -11,7 +11,7 @@ import {
   useMediaQuery,
   useTheme,
 } from '@mui/material';
-import makeStyles from '@mui/styles/makeStyles';
+import { makeStyles } from 'tss-react/mui';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import MapIcon from '@mui/icons-material/Home';
 import MenuIcon from '@mui/icons-material/Menu';
@@ -19,7 +19,7 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import DesktopMenu from './DesktopMenu';
 import { useTranslation } from './LocalizationProvider';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles()((theme, { miniVariant }) => ({
   desktopRoot: {
     height: '100%',
     display: 'flex',
@@ -30,7 +30,11 @@ const useStyles = makeStyles((theme) => ({
     flexDirection: 'column',
   },
   desktopDrawer: {
-    width: theme.dimensions.drawerWidthDesktop,
+    width: miniVariant ? `calc(${theme.spacing(8)} + 1px)` : theme.dimensions.drawerWidthDesktop,
+    transition: theme.transitions.create('width', {
+      easing: theme.transitions.easing.sharp,
+      duration: theme.transitions.duration.enteringScreen,
+    }),
   },
   mobileDrawer: {
     width: theme.dimensions.drawerWidthTablet,
@@ -76,7 +80,8 @@ const PageTitle = ({ breadcrumbs }) => {
 };
 
 const PageLayout = ({ menu, breadcrumbs, children }) => {
-  const classes = useStyles();
+  const [miniVariant] = useState(false);
+  const { classes } = useStyles({ miniVariant });
   const theme = useTheme();
   const navigate = useNavigate();
   const location = useLocation();
@@ -84,6 +89,8 @@ const PageLayout = ({ menu, breadcrumbs, children }) => {
   const desktop = useMediaQuery(theme.breakpoints.up('md'));
 
   const [openDrawer, setOpenDrawer] = useState(false);
+
+  // const toggleDrawer = () => setMiniVariant(!miniVariant);
 
   return desktop ? (
     <div className={classes.desktopRoot}>
@@ -105,13 +112,13 @@ const PageLayout = ({ menu, breadcrumbs, children }) => {
       }}>
         <Toolbar className={classes.desktopHeader}>
           <Stack direction="row">
-            <IconButton color="inherit" edge="start" sx={{ mr: 2 }} onClick={() => navigate(-1)}>
+            <IconButton color="inherit" edge="start" sx={{ mr: 2, borderRadius: 2 }} onClick={() => navigate(-1)}>
               <ArrowBackIcon />
             </IconButton>
             <PageTitle breadcrumbs={breadcrumbs} />
           </Stack>
           <Stack direction="row">
-            <IconButton color="inherit" edge="start" sx={{ mr: 2 }} onClick={() => navigate('/')}>
+            <IconButton color="inherit" edge="start" sx={{ mr: 2, borderRadius: 2 }} onClick={() => navigate('/')}>
               <MapIcon />
             </IconButton>
             <DesktopMenu />

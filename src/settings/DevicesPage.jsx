@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import {
@@ -17,9 +17,10 @@ import { formatTime } from '../common/util/formatter';
 import { useDeviceReadonly, useManager } from '../common/util/permissions';
 import useSettingsStyles from './common/useSettingsStyles';
 import DeviceUsersValue from './components/DeviceUsersValue';
+import usePersistedState from '../common/util/usePersistedState';
 
 const DevicesPage = () => {
-  const classes = useSettingsStyles();
+  const { classes } = useSettingsStyles();
   const navigate = useNavigate();
   const t = useTranslation();
 
@@ -31,7 +32,7 @@ const DevicesPage = () => {
   const [timestamp, setTimestamp] = useState(Date.now());
   const [items, setItems] = useState([]);
   const [searchKeyword, setSearchKeyword] = useState('');
-  const [showAll, setShowAll] = useState(false);
+  const [showAll, setShowAll] = usePersistedState('showAllDevices', false);
   const [loading, setLoading] = useState(false);
 
   useEffectAsync(async () => {
@@ -110,7 +111,7 @@ const DevicesPage = () => {
               <FormControlLabel
                 control={(
                   <Switch
-                    value={showAll}
+                    checked={showAll}
                     onChange={(e) => setShowAll(e.target.checked)}
                     size="small"
                   />

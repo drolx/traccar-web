@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import dayjs from 'dayjs';
 import {
   Table, TableRow, TableCell, TableHead, TableBody,
@@ -17,7 +17,7 @@ import SearchHeader, { filterByKeyword } from './components/SearchHeader';
 import useSettingsStyles from './common/useSettingsStyles';
 
 const MaintenacesPage = () => {
-  const classes = useSettingsStyles();
+  const { classes } = useSettingsStyles();
   const t = useTranslation();
 
   const positionAttributes = usePositionAttributes(t);

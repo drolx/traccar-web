@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { Link } from '@mui/material';
 import { useTranslation } from './LocalizationProvider';
@@ -18,7 +18,8 @@ const AddressValue = ({ latitude, longitude, originalAddress }) => {
     setAddress(originalAddress);
   }, [latitude, longitude, originalAddress]);
 
-  const showAddress = useCatch(async () => {
+  const showAddress = useCatch(async (event) => {
+    event.preventDefault();
     const query = new URLSearchParams({ latitude, longitude });
     const response = await fetch(`/api/server/geocode?${query.toString()}`);
     if (response.ok) {

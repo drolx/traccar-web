@@ -1,9 +1,8 @@
-import React, { useEffect, useState } from 'react';
-import dayjs from 'dayjs';
+import { useEffect, useState } from 'react';
 import {
-  useMediaQuery, Button, TextField, Link, Snackbar, IconButton, InputAdornment,
+  useMediaQuery, Button, TextField, Link, Snackbar, IconButton,
 } from '@mui/material';
-import makeStyles from '@mui/styles/makeStyles';
+import { makeStyles } from 'tss-react/mui';
 import CloseIcon from '@mui/icons-material/Close';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
@@ -16,12 +15,14 @@ import { sessionActions } from '../store';
 import { useTranslation } from '../common/components/LocalizationProvider';
 import LoginLayout from './LoginLayout';
 import usePersistedState from '../common/util/usePersistedState';
-import { handleLoginTokenListeners, nativeEnvironment, nativePostMessage } from '../common/components/NativeInterface';
+import {
+  generateLoginToken, handleLoginTokenListeners, nativePostMessage,
+} from '../common/components/NativeInterface';
 import LogoImage from './LogoImage';
 import { useCatch } from '../reactHelper';
 import Loader from '../common/components/Loader';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles()((theme) => ({
   options: {
     position: 'fixed',
     top: theme.spacing(2),
@@ -58,7 +59,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const LoginPage = () => {
-  const classes = useStyles();
+  const { classes } = useStyles();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const theme = useTheme();
@@ -84,24 +85,6 @@ const LoginPage = () => {
   const handleMouseDownPassword = (event) => {
     event.preventDefault();
   };
-  const generateLoginToken = async () => {
-    if (nativeEnvironment) {
-      let token = '';
-      try {
-        const expiration = dayjs().add(6, 'months').toISOString();
-        const response = await fetch('/api/session/token', {
-          method: 'POST',
-          body: new URLSearchParams(`expiration=${expiration}`),
-        });
-        if (response.ok) {
-          token = await response.text();
-        }
-      } catch (error) {
-        token = '';
-      }
-      nativePostMessage(`login|${token}`);
-    }
-  };
 
   const handlePasswordLogin = async (event) => {
     event.preventDefault();
@@ -123,7 +106,7 @@ const LoginPage = () => {
       } else {
         throw Error(await response.text());
       }
-    } catch (error) {
+    } catch {
       setFailed(true);
       setPassword('');
     }
@@ -171,10 +154,12 @@ const LoginPage = () => {
           autoFocus={!email}
           onChange={(e) => setEmail(e.target.value)}
           helperText={failed && 'Invalid username or password'}
-          InputProps={{
-            startAdornment: (
-              <EmailIcon style={{ marginRight: 8, padding: 1, }} />
-            ),
+          slotProps={{
+            input: {
+              startAdornment: (
+                <EmailIcon style={{ marginRight: 8, padding: 1, }} />
+              ),
+            }
           }}
         />
         <TextField
@@ -187,11 +172,12 @@ const LoginPage = () => {
           autoFocus={!!email}
           onChange={(e) => setPassword(e.target.value)}
           type={showPassword ? 'text' : 'password'}
-          InputProps={{
-            startAdornment: (
-              <PasswordIcon style={{ marginRight: 8, padding: 1, }} />
-            ),
-            endAdornment: (
+          slotProps={{
+            input: {
+              startAdornment: (
+                <PasswordIcon style={{ marginRight: 8, padding: 1, }} />
+              ),
+              endAdornment: (
               <IconButton
                 aria-label="toggle password visibility"
                 onClick={handleClickShowPassword}
@@ -201,6 +187,7 @@ const LoginPage = () => {
                 {showPassword ? <VisibilityOffIcon /> : <VisibilityIcon />}
               </IconButton>
             ),
+            }
           }}
         />
         {codeEnabled && (

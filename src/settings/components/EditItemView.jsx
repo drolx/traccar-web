@@ -1,4 +1,3 @@
-import React from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import {
   Container, Button, Accordion, AccordionDetails, AccordionSummary, Skeleton, Typography, TextField,
@@ -12,7 +11,7 @@ const EditItemView = ({
   children, endpoint, item, setItem, defaultItem, validate, onItemSaved, menu, breadcrumbs, actions,
 }) => {
   const navigate = useNavigate();
-  const classes = useSettingsStyles();
+  const { classes } = useSettingsStyles();
   const t = useTranslation();
 
   const { id } = useParams();
@@ -75,7 +74,6 @@ const EditItemView = ({
         )}
         <div className={classes.buttons}>
           <Button
-            type="button"
             color="primary"
             variant="outlined"
             onClick={() => navigate(-1)}
@@ -85,7 +83,6 @@ const EditItemView = ({
           </Button>
           {actions}
           <Button
-            type="button"
             color="primary"
             variant="contained"
             onClick={handleSave}

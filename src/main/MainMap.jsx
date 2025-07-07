@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import { useCallback } from 'react';
 import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { useDispatch, useSelector } from 'react-redux';
@@ -42,7 +42,7 @@ const MainMap = ({ filteredPositions, selectedPosition, onEventsClick }) => {
         <MapLiveRoutes />
         <MapPositions
           positions={filteredPositions}
-          onClick={onMarkerClick}
+          onMarkerClick={onMarkerClick}
           selectedPosition={selectedPosition}
           showStatus
         />

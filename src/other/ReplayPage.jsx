@@ -1,11 +1,10 @@
-import React, {
+import {
   useState, useEffect, useRef, useCallback,
 } from 'react';
 import {
   IconButton, Paper, Slider, Toolbar, Typography,
 } from '@mui/material';
-import makeStyles from '@mui/styles/makeStyles';
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import { makeStyles } from 'tss-react/mui';
 import TuneIcon from '@mui/icons-material/Tune';
 import DownloadIcon from '@mui/icons-material/Download';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
@@ -26,8 +25,9 @@ import MapCamera from '../map/MapCamera';
 import MapGeofence from '../map/MapGeofence';
 import StatusCard from '../common/components/StatusCard';
 import MapScale from '../map/MapScale';
+import BackIcon from '../common/components/BackIcon';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles()((theme) => ({
   root: {
     height: '100%',
   },
@@ -78,7 +78,7 @@ const useStyles = makeStyles((theme) => ({
 
 const ReplayPage = () => {
   const t = useTranslation();
-  const classes = useStyles();
+  const { classes } = useStyles();
   const navigate = useNavigate();
   const timerRef = useRef();
 
@@ -92,6 +92,7 @@ const ReplayPage = () => {
   const [to, setTo] = useState();
   const [expanded, setExpanded] = useState(true);
   const [playing, setPlaying] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const deviceName = useSelector((state) => {
     if (selectedDeviceId) {
@@ -131,22 +132,27 @@ const ReplayPage = () => {
   }, [setShowCard]);
 
   const handleSubmit = useCatch(async ({ deviceId, from, to }) => {
+    setLoading(true);
     setSelectedDeviceId(deviceId);
     setFrom(from);
     setTo(to);
     const query = new URLSearchParams({ deviceId, from, to });
-    const response = await fetch(`/api/positions?${query.toString()}`);
-    if (response.ok) {
-      setIndex(0);
-      const positions = await response.json();
-      setPositions(positions);
-      if (positions.length) {
-        setExpanded(false);
+    try {
+      const response = await fetch(`/api/positions?${query.toString()}`);
+      if (response.ok) {
+        setIndex(0);
+        const positions = await response.json();
+        setPositions(positions);
+        if (positions.length) {
+          setExpanded(false);
+        } else {
+          throw Error(t('sharedNoData'));
+        }
       } else {
-        throw Error(t('sharedNoData'));
+        throw Error(await response.text());
       }
-    } else {
-      throw Error(await response.text());
+    } finally {
+      setLoading(false);
     }
   });
 
@@ -160,9 +166,9 @@ const ReplayPage = () => {
       <MapView>
         <MapGeofence />
         <MapRoutePath positions={positions} />
-        <MapRoutePoints positions={positions} onClick={onPointClick} />
+        <MapRoutePoints positions={positions} onClick={onPointClick} showSpeedControl />
         {index < positions.length && (
-          <MapPositions positions={[positions[index]]} onClick={onMarkerClick} titleField="fixTime" />
+          <MapPositions positions={[positions[index]]} onMarkerClick={onMarkerClick} titleField="fixTime" />
         )}
       </MapView>
       <MapScale />
@@ -171,7 +177,7 @@ const ReplayPage = () => {
         <Paper elevation={3} square>
           <Toolbar>
             <IconButton edge="start" sx={{ mr: 2 }} onClick={() => navigate(-1)}>
-              <ArrowBackIcon />
+              <BackIcon />
             </IconButton>
             <Typography variant="h6" className={classes.title}>{t('reportReplay')}</Typography>
             {!expanded && (
@@ -213,7 +219,7 @@ const ReplayPage = () => {
               </div>
             </>
           ) : (
-            <ReportFilter handleSubmit={handleSubmit} fullScreen showOnly />
+            <ReportFilter handleSubmit={handleSubmit} fullScreen showOnly loading={loading} />
           )}
         </Paper>
       </div>

@@ -1,5 +1,7 @@
 import LoginLayout from './LoginLayout';
-import { Paper, Accordion, AccordionSummary, AccordionDetails, Typography, } from '@mui/material';
+import {
+ Paper, Accordion, AccordionSummary, AccordionDetails, Typography, 
+} from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { useTheme } from '@mui/material/styles';
 import Faqs from '../data/faqs.json';

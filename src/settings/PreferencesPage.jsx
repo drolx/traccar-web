@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import dayjs from 'dayjs';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
@@ -30,7 +30,7 @@ const deviceFields = [
 ];
 
 const PreferencesPage = () => {
-  const classes = useSettingsStyles();
+  const { classes } = useSettingsStyles();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const t = useTranslation();
@@ -41,7 +41,7 @@ const PreferencesPage = () => {
   const user = useSelector((state) => state.session.user);
   const [attributes, setAttributes] = useState(user.attributes);
 
-  const versionApp = import.meta.env.VITE_APP_VERSION.slice(0, -2);
+  const versionApp = import.meta.env.VITE_APP_VERSION;
   const versionServer = useSelector((state) => state.session.server.version);
   const socket = useSelector((state) => state.session.socket);
 
@@ -108,7 +108,7 @@ const PreferencesPage = () => {
                   <InputLabel>{t('mapActive')}</InputLabel>
                   <Select
                     label={t('mapActive')}
-                    value={attributes.activeMapStyles?.split(',') || ['openFreeMap', 'locationIqStreets', 'locationIqDark']}
+                    value={attributes.activeMapStyles?.split(',') || ['locationIqStreets', 'locationIqDark', 'openFreeMap']}
                     onChange={(e, child) => {
                       const clicked = mapStyles.find((s) => s.id === child.props.value);
                       if (clicked.available) {
@@ -154,24 +154,27 @@ const PreferencesPage = () => {
                   multiple
                   freeSolo
                   options={Object.keys(positionAttributes)}
-                  getOptionLabel={(option) => (positionAttributes[option]?.name || option)}
+                  getOptionLabel={(option) => {
+                    if (typeof option === 'object' && option.inputValue) {
+                      return option.inputValue;
+                    }
+                    return positionAttributes[option]?.name || option;
+                  }}
                   value={attributes.positionItems?.split(',') || ['fixTime', 'address', 'speed', 'totalDistance']}
-                  onChange={(_, option) => {
-                    setAttributes({ ...attributes, positionItems: option.join(',') });
+                  onChange={(_, newValue) => {
+                    setAttributes({ ...attributes, positionItems: newValue.map((x) => (typeof x === 'string' ? x : x.inputValue)).join(','), });
                   }}
                   filterOptions={(options, params) => {
                     const filtered = filter(options, params);
-                    if (params.inputValue && !filtered.includes(params.inputValue)) {
-                      filtered.push(params.inputValue);
+                    if (params.inputValue && !options.includes(params.inputValue)) {
+                      filtered.push({ inputValue: params.inputValue, name: `${t('sharedAdd')} "${params.inputValue}"` });
                     }
                     return filtered;
                   }}
-                  renderInput={(params) => (
-                    <TextField
-                      {...params}
-                      label={t('attributePopupInfo')}
-                    />
+                  renderOption={(props, option) => (
+                    <li {...props}>{option.name ? option.name : (positionAttributes[option]?.name || option)}</li>
                   )}
+                  renderInput={(params) => <TextField {...params} label={t('attributePopupInfo')} />}
                 />
                 <FormControl>
                   <InputLabel>{t('mapLiveRoutes')}</InputLabel>

@@ -1,18 +1,18 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useSelector } from 'react-redux';
 
 import {
   Typography, Container, Tooltip, Paper, AppBar, Toolbar, IconButton, Table, TableHead, TableRow, TableCell, TableBody,
 } from '@mui/material';
-import makeStyles from '@mui/styles/makeStyles';
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import { makeStyles } from 'tss-react/mui';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useEffectAsync } from '../reactHelper';
 import { useTranslation } from '../common/components/LocalizationProvider';
 import PositionValue from '../common/components/PositionValue';
 import usePositionAttributes from '../common/attributes/usePositionAttributes';
+import BackIcon from '../common/components/BackIcon';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles()((theme) => ({
   root: {
     height: '100%',
     display: 'flex',
@@ -26,7 +26,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const PositionPage = () => {
-  const classes = useStyles();
+  const { classes } = useStyles();
   const navigate = useNavigate();
   const t = useTranslation();
 
@@ -65,7 +65,7 @@ const PositionPage = () => {
       <AppBar position="sticky" color="inherit">
         <Toolbar>
           <IconButton color="inherit" edge="start" sx={{ mr: 2 }} onClick={() => navigate(-1)}>
-            <ArrowBackIcon />
+            <BackIcon />
           </IconButton>
           <Typography variant="h6">
             {deviceName}

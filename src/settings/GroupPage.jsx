@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import TextField from '@mui/material/TextField';
 
@@ -18,7 +18,7 @@ import { groupsActions } from '../store';
 import useSettingsStyles from './common/useSettingsStyles';
 
 const GroupPage = () => {
-  const classes = useSettingsStyles();
+  const { classes } = useSettingsStyles();
   const dispatch = useDispatch();
   const t = useTranslation();
 

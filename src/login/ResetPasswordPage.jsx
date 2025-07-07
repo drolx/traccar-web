@@ -1,17 +1,17 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import {
   Button, TextField, Typography, Snackbar, IconButton,
 } from '@mui/material';
-import makeStyles from '@mui/styles/makeStyles';
+import { makeStyles } from 'tss-react/mui';
 import { useNavigate } from 'react-router-dom';
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import LoginLayout from './LoginLayout';
 import { useTranslation } from '../common/components/LocalizationProvider';
 import useQuery from '../common/util/useQuery';
 import { snackBarDurationShortMs } from '../common/util/duration';
 import { useCatch } from '../reactHelper';
+import BackIcon from '../common/components/BackIcon';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles()((theme) => ({
   container: {
     display: 'flex',
     flexDirection: 'column',
@@ -25,12 +25,12 @@ const useStyles = makeStyles((theme) => ({
     fontSize: theme.spacing(3),
     fontWeight: 500,
     marginLeft: theme.spacing(1),
-    textTransform: 'uppercase',
+    textTransform: 'capitalize',
   },
 }));
 
 const ResetPasswordPage = () => {
-  const classes = useStyles();
+  const { classes } = useStyles();
   const navigate = useNavigate();
   const t = useTranslation();
   const query = useQuery();
@@ -67,7 +67,7 @@ const ResetPasswordPage = () => {
       <div className={classes.container}>
         <div className={classes.header}>
           <IconButton color="primary" onClick={() => navigate('/login')}>
-            <ArrowBackIcon />
+            <BackIcon />
           </IconButton>
           <Typography className={classes.title} color="primary">
             {t('loginReset')}

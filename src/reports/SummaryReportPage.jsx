@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import {
@@ -35,7 +35,7 @@ const columnsMap = new Map(columnsArray);
 
 const SummaryReportPage = () => {
   const navigate = useNavigate();
-  const classes = useReportStyles();
+  const { classes } = useReportStyles();
   const t = useTranslation();
 
   const devices = useSelector((state) => state.devices.items);
@@ -44,7 +44,7 @@ const SummaryReportPage = () => {
   const speedUnit = useAttributePreference('speedUnit');
   const volumeUnit = useAttributePreference('volumeUnit');
 
-  const [columns, setColumns] = usePersistedState('summaryColumns', ['startTime', 'distance', 'averageSpeed']);
+  const [columns, setColumns] = usePersistedState('summaryColumns', ['startTime', 'distance', 'maxSpeed', 'averageSpeed', 'engineHours']);
   const [daily, setDaily] = useState(false);
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -129,7 +129,7 @@ const SummaryReportPage = () => {
           <ColumnSelect columns={columns} setColumns={setColumns} columnsArray={columnsArray} />
         </ReportFilter>
       </div>
-      <Table>
+      <Table size="small" stickyHeader>
         <TableHead>
           <TableRow>
             <TableCell>{t('sharedDevice')}</TableCell>

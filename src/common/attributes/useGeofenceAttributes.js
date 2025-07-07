@@ -5,6 +5,14 @@ export default (t) => useMemo(() => ({
     name: t('attributeColor'),
     type: 'string',
   },
+  mapLineWidth: {
+    name: t('attributeMapLineWidth'),
+    type: 'number',
+  },
+  mapLineOpacity: {
+    name: t('attributeMapLineOpacity'),
+    type: 'number',
+  },
   speedLimit: {
     name: t('attributeSpeedLimit'),
     type: 'number',
@@ -14,5 +22,9 @@ export default (t) => useMemo(() => ({
     name: t('attributePolylineDistance'),
     type: 'number',
     subtype: 'distance',
+  },
+  hide: {
+    name: t('sharedFilterMap'),
+    type: 'boolean',
   },
 }), [t]);

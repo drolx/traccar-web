@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import {
   FormControl, InputLabel, Select, MenuItem, Button, TextField, Typography,
 } from '@mui/material';
@@ -14,7 +14,7 @@ import { useRestriction } from '../../common/util/permissions';
 const ReportFilter = ({
   children, handleSubmit, handleSchedule, showOnly, ignoreDevice, multiDevice, includeGroups, loading,
 }) => {
-  const classes = useReportStyles();
+  const { classes } = useReportStyles();
   const dispatch = useDispatch();
   const t = useTranslation();
 
@@ -95,6 +95,7 @@ const ReportFilter = ({
       {!ignoreDevice && (
         <div className={classes.filterItem}>
           <SelectField
+            size="small"
             label={t(multiDevice ? 'deviceTitle' : 'reportDevice')}
             data={Object.values(devices).sort((a, b) => a.name.localeCompare(b.name))}
             value={multiDevice ? deviceIds : deviceId}
@@ -107,6 +108,7 @@ const ReportFilter = ({
       {includeGroups && (
         <div className={classes.filterItem}>
           <SelectField
+            size="small"
             label={t('settingsGroups')}
             data={Object.values(groups).sort((a, b) => a.name.localeCompare(b.name))}
             value={groupIds}
@@ -121,7 +123,7 @@ const ReportFilter = ({
           <div className={classes.filterItem}>
             <FormControl fullWidth>
               <InputLabel>{t('reportPeriod')}</InputLabel>
-              <Select label={t('reportPeriod')} value={period} onChange={(e) => dispatch(reportsActions.updatePeriod(e.target.value))}>
+              <Select size="small" label={t('reportPeriod')} value={period} onChange={(e) => dispatch(reportsActions.updatePeriod(e.target.value))}>
                 <MenuItem value="today">{t('reportToday')}</MenuItem>
                 <MenuItem value="yesterday">{t('reportYesterday')}</MenuItem>
                 <MenuItem value="thisWeek">{t('reportThisWeek')}</MenuItem>
@@ -135,6 +137,7 @@ const ReportFilter = ({
           {period === 'custom' && (
             <div className={classes.filterItem}>
               <TextField
+                size="small"
                 label={t('reportFrom')}
                 type="datetime-local"
                 value={from}
@@ -146,6 +149,7 @@ const ReportFilter = ({
           {period === 'custom' && (
             <div className={classes.filterItem}>
               <TextField
+                size="small"
                 label={t('reportTo')}
                 type="datetime-local"
                 value={to}
@@ -159,6 +163,7 @@ const ReportFilter = ({
         <>
           <div className={classes.filterItem}>
             <TextField
+              size="small"
               value={description || ''}
               onChange={(event) => setDescription(event.target.value)}
               label={t('sharedDescription')}
@@ -167,6 +172,7 @@ const ReportFilter = ({
           </div>
           <div className={classes.filterItem}>
             <SelectField
+              size="small"
               value={calendarId}
               onChange={(event) => setCalendarId(Number(event.target.value))}
               endpoint="/api/calendars"
@@ -181,16 +187,18 @@ const ReportFilter = ({
         {showOnly ? (
           <Button
             fullWidth
+            size="small"
             variant="outlined"
             color="secondary"
             disabled={disabled}
             onClick={() => handleClick('json')}
           >
-            <Typography variant="button" noWrap>{t('reportShow')}</Typography>
+            <Typography variant="button" noWrap>{t(loading ? 'sharedLoading' : 'reportShow')}</Typography>
           </Button>
         ) : (
           <SplitButton
             fullWidth
+            size="small"
             variant="outlined"
             color="secondary"
             disabled={disabled}

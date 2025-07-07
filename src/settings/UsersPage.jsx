@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
   Table, TableRow, TableCell, TableHead, TableBody, Switch, TableFooter, FormControlLabel,
@@ -18,7 +18,7 @@ import SearchHeader, { filterByKeyword } from './components/SearchHeader';
 import useSettingsStyles from './common/useSettingsStyles';
 
 const UsersPage = () => {
-  const classes = useSettingsStyles();
+  const { classes } = useSettingsStyles();
   const navigate = useNavigate();
   const t = useTranslation();
 
