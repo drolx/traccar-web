@@ -154,10 +154,12 @@ const LoginPage = () => {
           autoFocus={!email}
           onChange={(e) => setEmail(e.target.value)}
           helperText={failed && 'Invalid username or password'}
-          InputProps={{
-            startAdornment: (
-              <EmailIcon style={{ marginRight: 8, padding: 1, }} />
-            ),
+          slotProps={{
+            input: {
+              startAdornment: (
+                <EmailIcon style={{ marginRight: 8, padding: 1, }} />
+              ),
+            }
           }}
         />
         <TextField
@@ -170,11 +172,12 @@ const LoginPage = () => {
           autoFocus={!!email}
           onChange={(e) => setPassword(e.target.value)}
           type={showPassword ? 'text' : 'password'}
-          InputProps={{
-            startAdornment: (
-              <PasswordIcon style={{ marginRight: 8, padding: 1, }} />
-            ),
-            endAdornment: (
+          slotProps={{
+            input: {
+              startAdornment: (
+                <PasswordIcon style={{ marginRight: 8, padding: 1, }} />
+              ),
+              endAdornment: (
               <IconButton
                 aria-label="toggle password visibility"
                 onClick={handleClickShowPassword}
@@ -184,6 +187,7 @@ const LoginPage = () => {
                 {showPassword ? <VisibilityOffIcon /> : <VisibilityIcon />}
               </IconButton>
             ),
+            }
           }}
         />
         {codeEnabled && (
