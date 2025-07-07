@@ -2,6 +2,9 @@ import { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useNavigate, Link as RouterLink } from 'react-router-dom';
 import { Rnd } from 'react-rnd';
+import { useState } from 'react';
+import { useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import {
   Card,
   CardContent,
@@ -18,7 +21,6 @@ import {
   CardMedia,
   TableFooter,
   Link,
-  Tooltip,
 } from '@mui/material';
 import { makeStyles } from 'tss-react/mui';
 import CloseIcon from '@mui/icons-material/Cancel';
@@ -113,8 +115,8 @@ const StatusRow = ({ name, content }) => {
 
   return (
     <TableRow>
-      <TableCell size='small' className={classes.cell}>
-        <Typography variant="body2" className={classes.propertyCell}>{name}</Typography>
+      <TableCell size='small' sx={{ textWrap: 'nowrap' }} className={classes.cell}>
+        <Typography variant="body2">{name}</Typography>
       </TableCell>
       <TableCell size='small' className={classes.cell}>
         <Typography variant="body2" color="textSecondary">{content}</Typography>
@@ -271,7 +273,7 @@ const StatusCard = ({ deviceId, position, onClose, disableActions, desktopPaddin
       </div>
       {position && (
         <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={() => setAnchorEl(null)}>
-          {!readonly && <MenuItem onClick={handleGeofence}>{t('sharedCreateGeofence')}</MenuItem>}
+          <MenuItem onClick={handleGeofence}>{t('sharedCreateGeofence')}</MenuItem>
           <MenuItem component="a" target="_blank" href={`https://www.google.com/maps/search/?api=1&query=${position.latitude}%2C${position.longitude}`}>{t('linkGoogleMaps')}</MenuItem>
           <MenuItem component="a" target="_blank" href={`http://maps.apple.com/?ll=${position.latitude},${position.longitude}`}>{t('linkAppleMaps')}</MenuItem>
           <MenuItem component="a" target="_blank" href={`https://www.google.com/maps/@?api=1&map_action=pano&viewpoint=${position.latitude}%2C${position.longitude}&heading=${position.course}`}>{t('linkStreetView')}</MenuItem>
