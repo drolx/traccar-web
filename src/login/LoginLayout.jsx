@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { useMediaQuery, Paper, Select, FormControl, Tooltip, Box, MenuItem, Typography, Link } from '@mui/material';
 import { useLocalization, useTranslation } from '../common/components/LocalizationProvider';
@@ -80,23 +80,39 @@ const useStyles = makeStyles()((theme) => ({
   },
   menu: {
     gap: theme.spacing(2),
-    [theme.breakpoints.up('md')]: {
-      display: 'flex',
-    },
+    display: 'flex',
     [theme.breakpoints.down('md')]: {
-      display: 'none',
+      gap: theme.spacing(0.2),
     },
   },
   menuItem: {
     padding: theme.spacing(4, 6),
-    borderRadius: 4,
+    [theme.breakpoints.down('md')]: {
+      padding: theme.spacing(2, 3),
+    },
   },
+  menuItemFaqs: {
+    padding: theme.spacing(4, 6),
+    [theme.breakpoints.down('md')]: {
+      display: 'none',
+      visibility: 'hidden',
+    },
+  },
+  menuItemBack: {
+    padding: theme.spacing(4, 6),
+    [theme.breakpoints.up('md')]: {
+      padding: theme.spacing(2, 3),
+      display: 'none',
+      visibility: 'hidden',
+    },
+  }
 }));
 
 const LoginLayout = ({ children }) => {
   const { classes } = useStyles();
   const theme = useTheme();
   const navigate = useNavigate();
+  const location = useLocation();
   const t = useTranslation();
 
   const { languages, language, setLanguage } = useLocalization();
@@ -124,12 +140,19 @@ const LoginLayout = ({ children }) => {
             <LogoImage color={theme.palette.secondary.contrastText} />
           </Link>
           <Box className={classes.menu}>
+            {location.pathname !== "/login" && (
+              <MenuItem className={classes.menuItemBack} onClick={() => navigate("/")}>
+                <Typography variant="body1" color="text.primary">
+                  {"Back"}
+                </Typography>
+              </MenuItem>
+            )}
             <MenuItem className={classes.menuItem} onClick={() => navigate("/support")}>
               <Typography variant="body1" color="text.primary">
                 {'Support'}
               </Typography>
             </MenuItem>
-            <MenuItem className={classes.menuItem} onClick={() => navigate("/faqs")}>
+            <MenuItem className={classes.menuItemFaqs} onClick={() => navigate("/faqs")}>
               <Typography variant="body1" color="text.primary">
                 {"FAQ's"}
               </Typography>
