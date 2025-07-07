@@ -96,23 +96,21 @@ const DeviceRow = ({ data, index, style }) => {
   const primarySection = () => {
     const time = dayjs(item.lastUpdate).fromNow() ?? 'None';
 
-    return (<>
-      <span className={classes.mnimalText}>{time}</span>
-      <span>
+    return (<div>
+      <div className={classes.mnimalText}>{time}</div>
+      <div>
         {item[devicePrimary]}
         {deviceSecondary && item[deviceSecondary] && ` • ${item[deviceSecondary]}`}
-      </span>
-    </>)
+      </div>
+    </div>)
   };
 
   const secondarySection = () => {
-    return (<>
+    return (<div>
       {position && (
-        <Tooltip title={`${position.latitude.toFixed(5)}, ${position.longitude.toFixed(5)}`}>
-          <span style={{ textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{position.address ?? `${position.latitude.toFixed(5)}, ${position.longitude.toFixed(5)}` }</span>
-        </Tooltip>
+        <span>{position.address}</span>
       )}
-    </>)
+    </div>)
   };
 
   return (
