@@ -7,7 +7,7 @@ import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { useDispatch, useSelector } from 'react-redux';
 import DeviceList from './DeviceList';
-import BottomMenu from '../common/components/BottomMenu';
+import DesktopMenu from '../common/components/DesktopMenu';
 import StatusCard from '../common/components/StatusCard';
 import { devicesActions } from '../store';
 import usePersistedState from '../common/util/usePersistedState';
@@ -38,6 +38,15 @@ const useStyles = makeStyles()((theme) => ({
       height: '100%',
       width: '100%',
     },
+  },
+  menu: {
+    top: 0,
+    right: 0,
+    display: 'flex',
+    position: 'fixed',
+    pointerEvents: 'auto',
+    zIndex: 6,
+    margin: '0.75rem 5rem 0px 0px',
   },
   header: {
     pointerEvents: 'auto',
@@ -108,8 +117,13 @@ const MainPage = () => {
           onEventsClick={onEventsClick}
         />
       )}
+      {desktop && (
+        <div className={classes.menu}>
+          <DesktopMenu />
+        </div>
+      )}
       <div className={classes.sidebar}>
-        <Paper square elevation={3} className={classes.header}>
+        <Paper elevation={3} className={classes.header}>
           <MainToolbar
             filteredDevices={filteredDevices}
             devicesOpen={devicesOpen}
@@ -140,7 +154,8 @@ const MainPage = () => {
         </div>
         {desktop && (
           <div className={classes.footer}>
-            <BottomMenu />
+            {/* TODO: Change to device filter toolbar */}
+            {/* <BottomMenu /> */}
           </div>
         )}
       </div>
