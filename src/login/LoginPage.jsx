@@ -21,7 +21,6 @@ import {
 import LogoImage from './LogoImage';
 import { useCatch } from '../reactHelper';
 import Loader from '../common/components/Loader';
-import QrCodeDialog from '../common/components/QrCodeDialog';
 
 const useStyles = makeStyles()((theme) => ({
   options: {
@@ -72,7 +71,6 @@ const LoginPage = () => {
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [code, setCode] = useState('');
-  const [showQr, setShowQr] = useState(false);
 
   const registrationEnabled = useSelector((state) => state.session.server.registration);
   const emailEnabled = useSelector((state) => state.session.server.emailEnabled);
@@ -238,14 +236,8 @@ const LoginPage = () => {
               {t('loginReset')}
             </Link>
           )}
-          {!nativeEnvironment && (
-          <IconButton color="primary" onClick={() => setShowQr(true)}>
-            <QrCode2Icon />
-          </IconButton>
-        )}
         </div>
       </div>
-      <QrCodeDialog open={showQr} onClose={() => setShowQr(false)} />
       <Snackbar
         open={!!announcement && !announcementShown}
         message={announcement}

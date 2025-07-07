@@ -7,6 +7,7 @@ import ReactCountryFlag from 'react-country-flag';
 import LockOpenIcon from '@mui/icons-material/LockOpen';
 import { makeStyles } from 'tss-react/mui';
 import { useTheme } from '@mui/material/styles';
+import QrCodeDialog from '../common/components/QrCodeDialog';
 import LogoImage from './LogoImage';
 import WelcomeImage from '../resources/images/welcome.svg?react';
 import { nativeEnvironment } from '../common/components/NativeInterface';
@@ -89,21 +90,25 @@ const useStyles = makeStyles()((theme) => ({
       gap: theme.spacing(0.2),
     },
   },
+  menuActions: {
+    gap: theme.spacing(2),
+    display: 'flex',
+  },
   menuItem: {
-    padding: theme.spacing(4, 6),
+    padding: theme.spacing(1, 2),
     [theme.breakpoints.down('md')]: {
-      padding: theme.spacing(2, 3),
+      padding: theme.spacing(2, 2),
     },
   },
   menuItemFaqs: {
-    padding: theme.spacing(4, 6),
+    padding: theme.spacing(1, 2),
     [theme.breakpoints.down('md')]: {
       display: 'none',
       visibility: 'hidden',
     },
   },
   menuItemBack: {
-    padding: theme.spacing(4, 6),
+    padding: theme.spacing(1, 2),
     [theme.breakpoints.up('md')]: {
       padding: theme.spacing(2, 3),
       display: 'none',
@@ -125,6 +130,7 @@ const LoginLayout = ({ children, isForm = true }) => {
   const languageEnabled = useSelector((state) => !state.session.server.attributes['ui.disableLoginLanguage']);
   const changeEnabled = useSelector((state) => !state.session.server.attributes.disableChange);
   const [showServerTooltip, setShowServerTooltip] = useState(false);
+  const [showQr, setShowQr] = useState(false);
 
   useEffect(() => {
     if (window.localStorage.getItem('hostname') !== window.location.hostname) {
@@ -166,6 +172,7 @@ const LoginLayout = ({ children, isForm = true }) => {
               </Typography>
             </MenuItem>
           </Box>
+          <div className={classes.menuActions}>
           {nativeEnvironment && changeEnabled && (
             <Tooltip title={t('settingsServer')}>
               <IconButton onClick={() => navigate('/change-server')}>
@@ -187,6 +194,12 @@ const LoginLayout = ({ children, isForm = true }) => {
               </Select>
             </FormControl>
           )}
+          {!nativeEnvironment && (
+            <IconButton color="primary" onClick={() => setShowQr(true)}>
+              <QrCode2Icon />
+            </IconButton>
+          )}
+         </div>
         </div>
         {isForm ? (
           <form className={classes.form}>
@@ -208,6 +221,7 @@ const LoginLayout = ({ children, isForm = true }) => {
           </Typography>
         </div>
       </Paper>
+      <QrCodeDialog open={showQr} onClose={() => setShowQr(false)} />
     </main>
   );
 };
