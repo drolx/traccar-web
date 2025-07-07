@@ -209,15 +209,6 @@ const StatusCard = ({ deviceId, position, onClose, disableActions, desktopPaddin
                       ))}
 
                     </TableBody>
-                    <TableFooter>
-                      <TableRow>
-                        <TableCell colSpan={2} className={classes.cell}>
-                          <Typography variant="body2">
-                            <Link component={RouterLink} to={`/position/${position.id}`}>{t('sharedShowDetails')}</Link>
-                          </Typography>
-                        </TableCell>
-                      </TableRow>
-                    </TableFooter>
                   </Table>
                 </CardContent>
               )}

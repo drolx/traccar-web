@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { makeStyles } from 'tss-react/mui';
 import {
-  IconButton, Tooltip, ListItemText, ListItemButton,
+  IconButton, Tooltip, ListItemText, ListItemButton, ListItemIcon
 } from '@mui/material';
 import BatteryFullIcon from '@mui/icons-material/BatteryFull';
 import BatteryChargingFullIcon from '@mui/icons-material/BatteryChargingFull';
