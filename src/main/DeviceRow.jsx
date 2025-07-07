@@ -70,9 +70,6 @@ const useStyles = makeStyles()((theme) => ({
   neutralBackground: {
     backgroundColor: theme.palette.neutral.main,
   },
-  nameText: {
-
-  },
   mnimalText: {
     fontSize: '0.65rem',
     marginRight: '0.3rem',

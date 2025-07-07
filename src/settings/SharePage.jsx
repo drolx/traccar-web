@@ -76,8 +76,10 @@ const SharePage = () => {
               value={link || ''}
               onChange={(e) => setLink(e.target.value)}
               label={t('sharedLink')}
-              InputProps={{
-                readOnly: true,
+              slotProps={{
+                input: {
+                  readOnly: true,
+                }
               }}
             />
           </AccordionDetails>

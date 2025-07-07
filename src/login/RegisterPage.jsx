@@ -116,8 +116,10 @@ const RegisterPage = () => {
             label={t('loginTotpKey')}
             name="totpKey"
             value={totpKey || ''}
-            InputProps={{
-              readOnly: true,
+            slotProps={{
+              input: {
+                readOnly: true,
+              }
             }}
           />
         )}
