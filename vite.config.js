@@ -17,7 +17,18 @@ export default defineConfig(() => ({
   },
   plugins: [
     svgr(),
-    react(),
+    react({
+      babel: {
+        plugins: [
+          ['babel-plugin-react-compiler', {
+            target: '19',
+            environment: {
+              enableTreatFunctionDepsAsConditional: true
+            }
+          }],
+        ],
+      },
+    }),
     VitePWA({
       includeAssets: ['favicon.ico', 'apple-touch-icon-180x180.png'],
       workbox: {
