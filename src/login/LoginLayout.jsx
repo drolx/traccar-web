@@ -9,6 +9,7 @@ import ReactCountryFlag from 'react-country-flag';
 import LockOpenIcon from '@mui/icons-material/LockOpen';
 import { makeStyles } from 'tss-react/mui';
 import { useTheme } from '@mui/material/styles';
+import QrCode2Icon from '@mui/icons-material/QrCode2';
 import QrCodeDialog from '../common/components/QrCodeDialog';
 import LogoImage from './LogoImage';
 import WelcomeImage from '../resources/images/welcome.svg?react';

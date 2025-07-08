@@ -46,15 +46,6 @@ const useStyles = makeStyles()((theme) => ({
   neutral: {
     color: theme.palette.neutral.main,
   },
-  mnimalText: {
-    fontSize: '0.65rem',
-    marginRight: '0.3rem',
-  },
-  deviceStatus: {
-    width: '10px',
-    height: '10px',
-    borderRadius: '5px',
-  },
   selected: {
     backgroundColor: theme.palette.action.selected,
   },
@@ -73,10 +64,6 @@ const useStyles = makeStyles()((theme) => ({
   mnimalText: {
     fontSize: '0.65rem',
     marginRight: '0.3rem',
-  },
-  deviceStatusRoot: {
-    minWidth: 12,
-    alignItems: 'center'
   },
   deviceStatus: {
     width: '10px',
