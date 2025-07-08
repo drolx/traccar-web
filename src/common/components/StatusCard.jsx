@@ -225,14 +225,6 @@ const StatusCard = ({ deviceId, position, onClose, disableActions, desktopPaddin
                 >
                   <PendingIcon />
                 </IconButton>
-
-                <IconButton
-                  onClick={(e) => setAnchorEl(e.currentTarget)}
-                  disabled={!position}
-                >
-                  <LocationIcon />
-                </IconButton>
-
                 <IconButton
                   onClick={(e) => setAnchorEl(e.currentTarget)}
                   disabled={!position}

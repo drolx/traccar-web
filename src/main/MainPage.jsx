@@ -107,7 +107,7 @@ const MainPage = () => {
   }, [desktop, mapOnSelect, selectedDeviceId]);
 
   useFilter(keyword, filter, filterSort, filterMap, positions, setFilteredDevices, setFilteredPositions);
-
+  
   return (
     <div className={classes.root}>
       {desktop && (
