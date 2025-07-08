@@ -26,6 +26,7 @@ import useCommonDeviceAttributes from '../common/attributes/useCommonDeviceAttri
 import { useCatch } from '../reactHelper';
 import { devicesActions } from '../store';
 import useQuery from '../common/util/useQuery';
+import { useDeviceReadonly } from '../common/util/permissions';
 import useSettingsStyles from './common/useSettingsStyles';
 import QrCodeDialog from '../common/components/QrCodeDialog';
 
@@ -42,6 +43,7 @@ const DevicePage = () => {
 
   const query = useQuery();
   const uniqueId = query.get('uniqueId');
+  const deviceReadonly = useDeviceReadonly();
 
   const [removing, setRemoving] = useState(false);
   const [item, setItem] = useState(uniqueId ? { uniqueId } : null);

@@ -6,10 +6,10 @@ import {
 } from '@mui/material';
 import { useLocalization, useTranslation } from '../common/components/LocalizationProvider';
 import ReactCountryFlag from 'react-country-flag';
-import LockOpenIcon from '@mui/icons-material/LockOpen';
+import VpnLockIcon from '@mui/icons-material/VpnLock';
+import QrCode2Icon from '@mui/icons-material/QrCode2';
 import { makeStyles } from 'tss-react/mui';
 import { useTheme } from '@mui/material/styles';
-import QrCode2Icon from '@mui/icons-material/QrCode2';
 import QrCodeDialog from '../common/components/QrCodeDialog';
 import LogoImage from './LogoImage';
 import WelcomeImage from '../resources/images/welcome.svg?react';
@@ -175,14 +175,18 @@ const LoginLayout = ({ children, isForm = true }) => {
               </Typography>
             </MenuItem>
           </Box>
-          <div className={classes.menuActions}>
+         <div className={classes.menuActions}>
           {nativeEnvironment && changeEnabled && (
-            <Tooltip title={t('settingsServer')}>
-              <IconButton onClick={() => navigate('/change-server')}>
-                <LockOpenIcon />
-              </IconButton>
+          <IconButton color="primary" onClick={() => navigate('/change-server')}>
+            <Tooltip
+              title={`${t('settingsServer')}: ${window.location.hostname}`}
+              open={showServerTooltip}
+              arrow
+            >
+              <VpnLockIcon />
             </Tooltip>
-          )}
+          </IconButton>
+        )}
           {languageEnabled && (
             <FormControl>
               <Select value={language} onChange={(e) => setLanguage(e.target.value)}>
