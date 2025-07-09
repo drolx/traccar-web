@@ -71,6 +71,7 @@ const useStyles = makeStyles()((theme, { desktopPadding }) => ({
     filter: 'brightness(0) invert(1)',
   },
   table: {
+    overflow: 'hidden',
     '& .MuiTableCell-sizeSmall': {
       paddingLeft: 0,
       paddingRight: 0,
@@ -81,6 +82,7 @@ const useStyles = makeStyles()((theme, { desktopPadding }) => ({
   },
   cell: {
     borderBottom: 'none',
+    padding: theme.spacing('4px', 0, '4px', 0),
   },
   propertyCell: {
     padding: theme.spacing(0, 1, 0, 0.5),
@@ -109,11 +111,17 @@ const StatusRow = ({ name, content }) => {
   const { classes } = useStyles({ desktopPadding: 0 });
 
   return (
-    <TableRow>
-      <TableCell size='small' className={classes.cell}>
-        <Typography variant="body2" className={classes.propertyCell}>{name}</Typography>
+    <TableRow hover sx={{ borderBottom: 0.1, borderBottomColor: '#7f7f7f' }}>
+      <TableCell size='small' className={classes.cell} sx={{ width: '90px' }}>
+        <Typography variant="body2" className={classes.propertyCell} 
+          sx={{
+            whiteSpace: 'nowrap',
+            textOverflow: "ellipsis",
+            overflow: "hidden",
+            maxWidth: '85px',
+          }}>{name}</Typography>
       </TableCell>
-      <TableCell size='small' className={classes.cell}>
+      <TableCell align='left' size='small' className={classes.cell}>
         <Typography variant="body2" color="textSecondary">{content}</Typography>
       </TableCell>
     </TableRow>
@@ -135,7 +143,7 @@ const StatusCard = ({ deviceId, position, onClose, disableActions, desktopPaddin
   const deviceImage = device?.attributes?.deviceImage;
 
   const positionAttributes = usePositionAttributes(t);
-  const positionItems = useAttributePreference('positionItems', 'address,fixTime,speed');
+  const positionItems = useAttributePreference('positionItems', 'fixTime,address,speed,hours,totalDistance');
 
   const navigationAppLink = useAttributePreference('navigationAppLink');
   const navigationAppTitle = useAttributePreference('navigationAppTitle');
@@ -189,9 +197,9 @@ const StatusCard = ({ deviceId, position, onClose, disableActions, desktopPaddin
               </CardMedia>
               }
               {position && (
-                <CardContent sx={{ padding: 0.55 }} className={classes.content}>
+                <CardContent sx={{ padding: 0.35 }} className={classes.content}>
                   <Table size="small" classes={{ root: classes.table }}>
-                    <TableBody>
+                    <TableBody sx={{ overflow: 'hidden' }}>
                       {positionItems.split(',').filter((key) => position.hasOwnProperty(key) || position.attributes.hasOwnProperty(key)).map((key) => (
                         <StatusRow
                           key={key}
