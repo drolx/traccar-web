@@ -180,6 +180,8 @@ const RouteReportPage = () => {
                     </TableCell>
                   ))}
                   <TableCell {...cellProps}>
+                    {/* TODO: Fix rendering for this except hovered */}
+                    {selectedItem === item && (
                     <CollectionActions
                       itemId={item.id}
                       endpoint="positions"
@@ -189,6 +191,7 @@ const RouteReportPage = () => {
                         setItems(items.filter((position) => position.id !== item.id));
                       }}
                     />
+                    )}
                   </TableCell>
                 </TableRow>
               )) : (<TableShimmer columns={columns.length + 2} startAction />)}

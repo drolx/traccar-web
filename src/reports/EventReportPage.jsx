@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
-  FormControl, InputLabel, Select, MenuItem, Table, TableHead, TableRow, TableCell, TableBody, Link, IconButton,
+  FormControl, InputLabel, Select, MenuItem, Table, TableHead, TableRow, TableCell, TableBody, Link,
 } from '@mui/material';
 import GpsFixedIcon from '@mui/icons-material/GpsFixed';
 import { useSelector } from 'react-redux';
@@ -244,9 +244,7 @@ const EventReportPage = () => {
                 }}>
                   <TableCell {...cellProps}>
                     {(item.positionId && (
-                      <IconButton size="small" sx={{ padding: 0 }}>
-                        <GpsFixedIcon fontSize="small" />
-                      </IconButton>)) || ''}
+                      <GpsFixedIcon fontSize="small" />)) || ''}
                   </TableCell>
                   <TableCell {...cellProps}>{devices[item.deviceId].name}</TableCell>
                   {columns.map((key) => (
