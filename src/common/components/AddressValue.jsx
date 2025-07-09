@@ -33,7 +33,7 @@ const AddressValue = ({ latitude, longitude, originalAddress }) => {
     return address;
   }
   if (addressEnabled) {
-    return (<Link href="#" onClick={showAddress}>{ t('sharedShowAddress') + `(${formatCoordinate('latitude', latitude, coordinateFormat)}, ${formatCoordinate('longitude', longitude, coordinateFormat)})`}</Link>);
+    return (<Link href="#" onMouseEnter={showAddress}>{ t('sharedShowAddress') + `(${formatCoordinate('latitude', latitude, coordinateFormat)}, ${formatCoordinate('longitude', longitude, coordinateFormat)})`}</Link>);
   }
   return `${formatCoordinate('latitude', latitude, coordinateFormat)}, ${formatCoordinate('longitude', longitude, coordinateFormat)}`;
 };
