@@ -90,7 +90,7 @@ const CollectionActions = ({
                 </Tooltip>
               )}
               <Tooltip title={t('sharedRemove')}>
-                <IconButton size="small" onClick={handleRemove}>
+                <IconButton size="small" onClick={handleRemove} sx={{ padding: 0 }}>
                   <DeleteIcon fontSize="small" />
                 </IconButton>
               </Tooltip>
