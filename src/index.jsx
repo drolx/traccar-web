@@ -11,11 +11,12 @@ import NativeInterface from './common/components/NativeInterface';
 import ServerProvider from './ServerProvider';
 import ErrorBoundary from './ErrorBoundary';
 import AppThemeProvider from './AppThemeProvider';
-import fetchIntercept from 'fetch-intercept';
+// import fetchIntercept from 'fetch-intercept';
 
 preloadImages();
 
-/** Setup API inteception */
+// NOTE: Revert fetch-interception hack
+/*
 fetchIntercept.register({
   request: function (url, config) {
     const serverUrl = import.meta.env.VITE_SERVER_URL;
@@ -45,6 +46,7 @@ fetchIntercept.register({
     return response;
   }
 });
+*/
 
 const root = createRoot(document.getElementById('root'));
 root.render(

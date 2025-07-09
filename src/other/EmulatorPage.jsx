@@ -87,9 +87,10 @@ const EmulatorPage = () => {
         params.append('id', devices[deviceId].uniqueId);
         params.append('lat', latitude);
         params.append('lon', longitude);
-        const protocol = import.meta.env.VITE_SERVER_PROTOCOL ?? window.location.protocol
-        const serverUrl = import.meta.env.VITE_SERVER_URL ?? window.location.host;
-        response = await fetch(`${protocol}//${serverUrl}:5055?${params.toString()}`, {
+        // NOTE: Revert fetch-interception hack
+        // const protocol = import.meta.env.VITE_SVERVER_PROTOCOL ?? window.location.protocol
+        // const serverUrl = import.meta.env.VITE_SERVER_URL ?? window.location.host;
+        response = await fetch(`http://${window.location.hostname}:5055?${params.toString()}`, {
           method: 'POST',
           mode: 'no-cors',
         });
