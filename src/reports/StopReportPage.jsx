@@ -150,7 +150,7 @@ const StopReportPage = () => {
           <Table stickyHeader>
             <TableHead>
               <TableRow>
-                <TableCell {...cellProps} />
+                {items.length > 0 && <TableCell {...cellProps} />}
                 <TableCell {...cellProps}>{t('sharedDevice')}</TableCell>
                 {columns.map((key) => (<TableCell key={key} {...cellProps}>{t(columnsMap.get(key))}</TableCell>))}
               </TableRow>
