@@ -14,8 +14,12 @@ import RemoveDialog from '../common/components/RemoveDialog';
 
 const useStyles = makeStyles()((theme) => ({
   columnAction: {
-    width: '1%',
-    paddingRight: theme.spacing(1),
+    maxWidth: '200px',
+    padding: theme.spacing('2px', 0, '2px', 0),
+    whiteSpace: 'nowrap',
+    textOverflow: "ellipsis",
+    overflow: "hidden",
+    fontSize: 12,
   },
 }));
 
@@ -61,24 +65,30 @@ const ScheduledPage = () => {
     }
   };
 
+  const cellProps = {
+    className: classes.columnAction,
+    padding: 'none',
+    size: 'small',
+  };
+
   return (
     <PageLayout menu={<ReportsMenu />} breadcrumbs={['settingsTitle', 'reportScheduled']}>
       <Table size="small" stickyHeader>
         <TableHead>
           <TableRow>
-            <TableCell>{t('sharedType')}</TableCell>
-            <TableCell>{t('sharedDescription')}</TableCell>
-            <TableCell>{t('sharedCalendar')}</TableCell>
-            <TableCell className={classes.columnAction} />
+            <TableCell {...cellProps}>{t('sharedType')}</TableCell>
+            <TableCell {...cellProps}>{t('sharedDescription')}</TableCell>
+            <TableCell {...cellProps}>{t('sharedCalendar')}</TableCell>
+            <TableCell {...cellProps} />
           </TableRow>
         </TableHead>
         <TableBody>
           {!loading ? items.map((item) => (
             <TableRow key={item.id}>
-              <TableCell>{formatType(item.type)}</TableCell>
-              <TableCell>{item.description}</TableCell>
-              <TableCell>{calendars[item.calendarId].name}</TableCell>
-              <TableCell className={classes.columnAction} padding="none">
+              <TableCell {...cellProps}>{formatType(item.type)}</TableCell>
+              <TableCell {...cellProps}>{item.description}</TableCell>
+              <TableCell {...cellProps}>{calendars[item.calendarId].name}</TableCell>
+              <TableCell {...cellProps}>
                 <IconButton size="small" onClick={() => setRemovingId(item.id)}>
                   <DeleteIcon fontSize="small" />
                 </IconButton>

@@ -50,6 +50,12 @@ const StatisticsPage = () => {
     }
   });
 
+  const cellProps = {
+    className: classes.columnAction,
+    padding: 'none',
+    size: 'small',
+  };
+
   return (
     <PageLayout menu={<ReportsMenu />} breadcrumbs={['reportTitle', 'statisticsTitle']}>
       <div className={classes.header}>
@@ -60,14 +66,14 @@ const StatisticsPage = () => {
       <Table size="small" stickyHeader>
         <TableHead>
           <TableRow>
-            {columns.map((key) => (<TableCell key={key}>{t(columnsMap.get(key))}</TableCell>))}
+            {columns.map((key) => (<TableCell key={key} {...cellProps}>{t(columnsMap.get(key))}</TableCell>))}
           </TableRow>
         </TableHead>
         <TableBody>
           {!loading ? items.map((item) => (
             <TableRow key={item.id}>
               {columns.map((key) => (
-                <TableCell key={key}>
+                <TableCell key={key} {...cellProps}>
                   {key === 'captureTime' ? formatTime(item[key], 'date') : item[key]}
                 </TableCell>
               ))}

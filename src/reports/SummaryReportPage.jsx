@@ -113,6 +113,12 @@ const SummaryReportPage = () => {
     }
   };
 
+  const cellProps = {
+    className: classes.columnAction,
+    padding: 'none',
+    size: 'small',
+  };
+
   return (
     <PageLayout menu={<ReportsMenu />} breadcrumbs={['reportTitle', 'reportSummary']}>
       <div className={classes.header}>
@@ -132,16 +138,16 @@ const SummaryReportPage = () => {
       <Table size="small" stickyHeader>
         <TableHead>
           <TableRow>
-            <TableCell>{t('sharedDevice')}</TableCell>
-            {columns.map((key) => (<TableCell key={key}>{t(columnsMap.get(key))}</TableCell>))}
+            <TableCell {...cellProps}>{t('sharedDevice')}</TableCell>
+            {columns.map((key) => (<TableCell key={key} {...cellProps}>{t(columnsMap.get(key))}</TableCell>))}
           </TableRow>
         </TableHead>
         <TableBody>
           {!loading ? items.map((item) => (
             <TableRow key={(`${item.deviceId}_${Date.parse(item.startTime)}`)}>
-              <TableCell>{devices[item.deviceId].name}</TableCell>
+              <TableCell {...cellProps}>{devices[item.deviceId].name}</TableCell>
               {columns.map((key) => (
-                <TableCell key={key}>
+                <TableCell key={key} {...cellProps}>
                   {formatValue(item, key)}
                 </TableCell>
               ))}

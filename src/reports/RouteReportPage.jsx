@@ -7,7 +7,6 @@ import {
   IconButton, Table, TableBody, TableCell, TableHead, TableRow,
 } from '@mui/material';
 import GpsFixedIcon from '@mui/icons-material/GpsFixed';
-import LocationSearchingIcon from '@mui/icons-material/LocationSearching';
 import ReportFilter from './components/ReportFilter';
 import { useTranslation } from '../common/components/LocalizationProvider';
 import PageLayout from '../common/components/PageLayout';
@@ -111,6 +110,12 @@ const RouteReportPage = () => {
     }
   });
 
+  const cellProps = {
+    className: classes.columnAction,
+    padding: 'none',
+    size: 'small',
+  };
+
   return (
     <PageLayout menu={<ReportsMenu />} breadcrumbs={['reportTitle', 'reportRoute']}>
       <div className={classes.container}>
@@ -148,29 +153,25 @@ const RouteReportPage = () => {
           <Table size="small" stickyHeader>
             <TableHead>
               <TableRow>
-                <TableCell className={classes.columnAction} />
-                <TableCell>{t('sharedDevice')}</TableCell>
-                {columns.map((key) => (<TableCell key={key}>{positionAttributes[key]?.name || key}</TableCell>))}
-                <TableCell className={classes.columnAction} />
+                <TableCell {...cellProps} />
+                <TableCell {...cellProps}>{t('sharedDevice')}</TableCell>
+                {columns.map((key) => (<TableCell key={key} {...cellProps}>{positionAttributes[key]?.name || key}</TableCell >))}
+                <TableCell {...cellProps} />
               </TableRow>
             </TableHead>
             <TableBody>
               {!loading ? items.slice(0, 4000).map((item) => (
-                <TableRow key={item.id}>
-                  <TableCell className={classes.columnAction} padding="none">
-                    {selectedItem === item ? (
-                      <IconButton size="small" onClick={() => setSelectedItem(null)} ref={selectedIcon}>
+                <TableRow key={item.id} hover className={classes.rows} selected={selectedItem === item} onClick={() => setSelectedItem(selectedItem === item ? null : item)}>
+                  <TableCell {...cellProps}>
+                    {selectedItem === item && (
+                      <IconButton size="small" sx={{ padding: 0 }}>
                         <GpsFixedIcon fontSize="small" />
-                      </IconButton>
-                    ) : (
-                      <IconButton size="small" onClick={() => setSelectedItem(item)}>
-                        <LocationSearchingIcon fontSize="small" />
                       </IconButton>
                     )}
                   </TableCell>
-                  <TableCell>{devices[item.deviceId].name}</TableCell>
+                  <TableCell {...cellProps}>{devices[item.deviceId].name}</TableCell>
                   {columns.map((key) => (
-                    <TableCell key={key}>
+                    <TableCell key={key} {...cellProps}>
                       <PositionValue
                         position={item}
                         property={item.hasOwnProperty(key) ? key : null}
@@ -178,7 +179,7 @@ const RouteReportPage = () => {
                       />
                     </TableCell>
                   ))}
-                  <TableCell className={classes.actionCellPadding}>
+                  <TableCell {...cellProps}>
                     <CollectionActions
                       itemId={item.id}
                       endpoint="positions"

@@ -55,6 +55,12 @@ const CombinedReportPage = () => {
     }
   });
 
+  const cellProps = {
+    className: classes.columnAction,
+    padding: 'none',
+    size: 'small',
+  };
+
   return (
     <PageLayout menu={<ReportsMenu />} breadcrumbs={['reportTitle', 'reportCombined']}>
       <div className={classes.container}>
@@ -83,17 +89,17 @@ const CombinedReportPage = () => {
           <Table size="small" stickyHeader>
             <TableHead>
               <TableRow>
-                <TableCell>{t('sharedDevice')}</TableCell>
-                <TableCell>{t('positionFixTime')}</TableCell>
-                <TableCell>{t('sharedType')}</TableCell>
+                <TableCell {...cellProps}>{t('sharedDevice')}</TableCell>
+                <TableCell {...cellProps}>{t('positionFixTime')}</TableCell>
+                <TableCell {...cellProps}>{t('sharedType')}</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
               {!loading ? items.flatMap((item) => item.events.map((event, index) => (
-                <TableRow key={event.id}>
-                  <TableCell>{index ? '' : devices[item.deviceId].name}</TableCell>
-                  <TableCell>{formatTime(event.eventTime, 'seconds')}</TableCell>
-                  <TableCell>{t(prefixString('event', event.type))}</TableCell>
+                <TableRow hover key={event.id}>
+                  <TableCell {...cellProps}>{index ? '' : devices[item.deviceId].name}</TableCell>
+                  <TableCell {...cellProps}>{formatTime(event.eventTime, 'seconds')}</TableCell>
+                  <TableCell {...cellProps}>{t(prefixString('event', event.type))}</TableCell>
                 </TableRow>
               ))) : (<TableShimmer columns={3} />)}
             </TableBody>

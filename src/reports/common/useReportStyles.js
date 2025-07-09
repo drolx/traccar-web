@@ -20,9 +20,14 @@ export default makeStyles()((theme) => ({
     flexDirection: 'column',
     alignItems: 'stretch',
   },
+  rows: { borderBottom: 0.1, borderBottomColor: '#7f7f7f' },
   columnAction: {
-    width: '1%',
-    paddingLeft: theme.spacing(1),
+    maxWidth: '200px',
+    padding: theme.spacing('2px', 0, '2px', 0),
+    whiteSpace: 'nowrap',
+    textOverflow: "ellipsis",
+    overflow: "hidden",
+    fontSize: 12
   },
   filter: {
     display: 'inline-flex',

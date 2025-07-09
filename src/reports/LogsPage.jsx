@@ -14,8 +14,12 @@ import { sessionActions } from '../store';
 
 const useStyles = makeStyles()((theme) => ({
   columnAction: {
-    width: '1%',
-    paddingLeft: theme.spacing(1),
+    maxWidth: '200px',
+    padding: theme.spacing('2px', 0, '2px', 0),
+    whiteSpace: 'nowrap',
+    textOverflow: "ellipsis",
+    overflow: "hidden",
+    fontSize: 12,
   },
 }));
 
@@ -37,21 +41,27 @@ const LogsPage = () => {
     navigate(`/settings/device?${query.toString()}`);
   };
 
+  const cellProps = {
+    className: classes.columnAction,
+    padding: 'none',
+    size: 'small',
+  };
+
   return (
     <PageLayout menu={<ReportsMenu />} breadcrumbs={['reportTitle', 'sharedLogs']}>
       <Table size="small" stickyHeader>
         <TableHead>
           <TableRow>
-            <TableCell className={classes.columnAction} />
-            <TableCell>{t('deviceIdentifier')}</TableCell>
-            <TableCell>{t('positionProtocol')}</TableCell>
-            <TableCell>{t('commandData')}</TableCell>
+            <TableCell {...cellProps} />
+            <TableCell {...cellProps}>{t('deviceIdentifier')}</TableCell>
+            <TableCell {...cellProps}>{t('positionProtocol')}</TableCell>
+            <TableCell {...cellProps}>{t('commandData')}</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
           {items.map((item, index) => (
             <TableRow key={index}>
-              <TableCell className={classes.columnAction} padding="none">
+              <TableCell {...cellProps}>
                 {item.deviceId ? (
                   <IconButton color="success" size="small" disabled>
                     <CheckCircleOutlineIcon fontSize="small" />
@@ -64,9 +74,9 @@ const LogsPage = () => {
                   </Tooltip>
                 )}
               </TableCell>
-              <TableCell>{item.uniqueId}</TableCell>
-              <TableCell>{item.protocol}</TableCell>
-              <TableCell>{item.data}</TableCell>
+              <TableCell {...cellProps}>{item.uniqueId}</TableCell>
+              <TableCell {...cellProps}>{item.protocol}</TableCell>
+              <TableCell {...cellProps}>{item.data}</TableCell>
             </TableRow>
           ))}
         </TableBody>

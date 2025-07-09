@@ -6,7 +6,6 @@ import {
   Table, TableBody, TableCell, TableHead, TableRow,
 } from '@mui/material';
 import GpsFixedIcon from '@mui/icons-material/GpsFixed';
-import LocationSearchingIcon from '@mui/icons-material/LocationSearching';
 import {
   formatDistance, formatVolume, formatTime, formatNumericHours,
 } from '../common/util/formatter';
@@ -115,6 +114,12 @@ const StopReportPage = () => {
     }
   };
 
+  const cellProps = {
+    className: classes.columnAction,
+    padding: 'none',
+    size: 'small',
+  };
+
   return (
     <PageLayout menu={<ReportsMenu />} breadcrumbs={['reportTitle', 'reportStops']}>
       <div className={classes.container}>
@@ -145,28 +150,24 @@ const StopReportPage = () => {
           <Table stickyHeader>
             <TableHead>
               <TableRow>
-                <TableCell className={classes.columnAction} />
-                <TableCell>{t('sharedDevice')}</TableCell>
-                {columns.map((key) => (<TableCell key={key}>{t(columnsMap.get(key))}</TableCell>))}
+                <TableCell {...cellProps} />
+                <TableCell {...cellProps}>{t('sharedDevice')}</TableCell>
+                {columns.map((key) => (<TableCell key={key} {...cellProps}>{t(columnsMap.get(key))}</TableCell>))}
               </TableRow>
             </TableHead>
             <TableBody>
               {!loading ? items.map((item) => (
-                <TableRow key={item.positionId}>
-                  <TableCell className={classes.columnAction} padding="none">
-                    {selectedItem === item ? (
-                      <IconButton size="small" onClick={() => setSelectedItem(null)}>
+                <TableRow key={item.positionId} hover className={classes.rows} selected={selectedItem === item} onClick={() => setSelectedItem(selectedItem === item ? null : item)}>
+                  <TableCell {...cellProps}>
+                    {selectedItem === item && (
+                      <IconButton size="small" sx={{ padding: 0 }}>
                         <GpsFixedIcon fontSize="small" />
-                      </IconButton>
-                    ) : (
-                      <IconButton size="small" onClick={() => setSelectedItem(item)}>
-                        <LocationSearchingIcon fontSize="small" />
                       </IconButton>
                     )}
                   </TableCell>
-                  <TableCell>{devices[item.deviceId].name}</TableCell>
+                  <TableCell {...cellProps}>{devices[item.deviceId].name}</TableCell>
                   {columns.map((key) => (
-                    <TableCell key={key}>
+                    <TableCell key={key} {...cellProps}>
                       {formatValue(item, key)}
                     </TableCell>
                   ))}
