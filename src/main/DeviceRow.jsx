@@ -87,7 +87,7 @@ const DeviceRow = ({ data, index, style }) => {
   const speedUnit = useAttributePreference('speedUnit');
 
   const primarySection = () => {
-    const time = dayjs(item.lastUpdate).fromNow() ?? 'None';
+    const time = item.lastUpdate ? dayjs(item.lastUpdate).fromNow() : 'Pending';
 
     return (<div>
       <div className={classes.mnimalText}>{time}</div>
