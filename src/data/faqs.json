@@ -9,23 +9,15 @@
     },
     {
         "question": "Do you provide installation services for GPS tracking devices?",
-        "answer": "We only provide the platform for tracking. Installation charges for GPS devices come from the installer or technician you hire. We recommend contacting a professional for installation."
+        "answer": "We only provide the platform for tracking. Installation charges for GPS devices come from the installer or technician you hire. We recommend can a professional for installation."
     },
     {
         "question": "How much does the GPS tracking service subscription cost?",
         "answer": "Our GPS tracking service is completely free, now and forever. There are no subscription fees involved."
     },
     {
-        "question": "How do we make money?",
-        "answer": "Our current GPS tracking service is a testing environment for our new innovations. In the future, we may generate revenue through advertisements when we release an improved version of the platform."
-    },
-    {
         "question": "Is the GPS tracking service secure?",
         "answer": "Yes, we take privacy seriously. We do not collect or use any personal information. All data related to registered vehicles is isolated and never shared or used for any other purpose."
-    },
-    {
-        "question": "Can I track multiple vehicles with the same account?",
-        "answer": "Yes, you can track multiple vehicles from the same account. Simply add each vehicle to your dashboard after registering them."
     },
     {
         "question": "What devices are compatible with your GPS tracking platform?",
@@ -34,9 +26,5 @@
     {
         "question": "Do you provide mobile app support?",
         "answer": "Yes, we have a mobile app available for both iOS and Android, which allows you to monitor your vehicles on the go."
-    },
-    {
-        "question": "Can I set geofencing alerts for my vehicles?",
-        "answer": "Yes, you can set up geofencing alerts through the platform. This will notify you whenever your vehicle enters or exits a designated area."
     }
 ]

@@ -75,15 +75,20 @@ const useStyles = makeStyles()((theme) => ({
   },
   footer: {
     width: '100%',
+    fontSize: '0.85rem',
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
     padding: theme.spacing(2),
   },
+  footerText: {
+    fontSize: '0.85rem',
+  },
   footerCompany: {
+    fontSize: '0.85rem',
     [theme.breakpoints.down('md')]: {
-      display: 'none',
+      fontSize: '0.85rem',
     },
   },
   menu: {
@@ -218,13 +223,13 @@ const LoginLayout = ({ children, isForm = true }) => {
           </div>)}
         <div
           className={classes.footer}>
-          <Typography>{ServiceInfo.dev.attribution} <Link underline="none" target="_blank" href={ServiceInfo.dev.link} color="primary">{ServiceInfo.dev.name}</Link></Typography>
+          <Typography className={classes.footerText}>{ServiceInfo.dev.attribution} <Link underline="none" target="_blank" href={ServiceInfo.dev.link} color="primary">{ServiceInfo.dev.name}</Link></Typography>
           <Typography className={classes.footerCompany}>
             &copy;&nbsp;
             {(new Date()).getFullYear()}
-            <span>,&nbsp;</span>
-            <Link underline="none" target="_blank" href={ServiceInfo.company.link} color="primary">{ServiceInfo.company.name}</Link>
-            <span>,&nbsp;{ServiceInfo.company.attribution}</span>
+            <span>&nbsp;</span>
+            <Link className={classes.footerText} underline="none" target="_blank" href={ServiceInfo.company.link} color="primary">{ServiceInfo.company.name}</Link>
+            {ServiceInfo.company.attribution && <span>,&nbsp;{ServiceInfo.company.attribution}</span>}
           </Typography>
         </div>
       </Paper>

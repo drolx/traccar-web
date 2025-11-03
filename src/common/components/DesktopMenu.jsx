@@ -73,9 +73,10 @@ const DesktopMenu = () => {
         <Paper elevation={3}>
             <Stack direction="row">
                 <Tooltip title={t('reportTitle')}>
-                    <IconButton color="inherit" edge="start" sx={{ mr: 2, ml: 2, borderRadius: 2 }} onClick={() => navigate('/reports/route')}>
-                        <DescriptionIcon />
-                    </IconButton>
+                    <Button color="inherit" edge="start" sx={{ mr: 2, ml: 2, px: 2, borderRadius: 2 }} onClick={() => navigate('/reports/route')}>
+                        <DescriptionIcon color="primary" sx={{ width: 24, height: 24, mr: 1 }} />
+                        <Typography sx={{ textTransform: 'capitalize' }}>{t('reportTitle')}</Typography>
+                    </Button>
                 </Tooltip>
                 <Button color="primary" size="large" onClick={handleClick} sx={{ textTransform: 'none' }}>
                     <Avatar color="primary" sx={{ width: 28, height: 28, mr: 1 }}>
